@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTS SIO 2030 - Prospective</title>
+    <title>BTS SIO 2030 - Prospective Intégrale</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,13 +18,10 @@
         .glass-panel { background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
         .slide { display: none; height: 100%; flex-direction: column; justify-content: center; animation: slideReveal 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
         .slide.active { display: flex; }
-        @keyframes slideReveal { from { opacity: 0; transform: translateY(30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        .grid-bg { position: absolute; inset: 0; background-image: radial-gradient(rgba(6, 182, 212, 0.1) 1px, transparent 0); background-size: 40px 40px; z-index: -1; }
-        .glow { position: absolute; border-radius: 50%; filter: blur(100px); opacity: 0.15; z-index: -1; }
-        .interactive-card { transition: all 0.3s ease; cursor: pointer; border: 1px solid rgba(255,255,255,0.05); }
-        .interactive-card:hover { transform: translateY(-10px); border-color: var(--accent); background: rgba(6, 182, 212, 0.05); }
-        .btn-action { transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .btn-action:hover { transform: scale(1.05) rotate(-1deg); }
+        @keyframes slideReveal { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .grid-bg { position: absolute; inset: 0; background-image: radial-gradient(rgba(6, 182, 212, 0.07) 1px, transparent 0); background-size: 50px 50px; z-index: -1; }
+        .glow { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.12; z-index: -1; }
+        .interactive-card:hover { transform: translateY(-8px); border-color: var(--accent); background: rgba(6, 182, 212, 0.05); }
     </style>
 <script type="importmap">
 {
@@ -39,13 +36,15 @@
 </head>
 <body class="bg-slate-950 text-slate-100 selection:bg-cyan-500/30">
     <div class="grid-bg"></div>
-    <div class="glow top-0 left-1/4 w-96 h-96 bg-cyan-500"></div>
-    <div class="glow bottom-0 right-1/4 w-96 h-96 bg-emerald-500"></div>
+    <div class="glow top-0 left-1/4 w-[600px] h-[600px] bg-cyan-500"></div>
+    <div class="glow bottom-0 right-1/4 w-[600px] h-[600px] bg-emerald-500"></div>
 
-    <div id="progress-bar" class="fixed top-0 left-0 w-full h-2 flex z-50"></div>
+    <!-- Progress Bar -->
+    <div id="progress-bar" class="fixed top-0 left-0 w-full h-2.5 flex z-50"></div>
 
     <main id="main-content" class="container mx-auto px-6 md:px-12 h-full relative z-10"></main>
 
+    <!-- Navigation -->
     <nav class="fixed bottom-8 left-0 w-full px-12 flex justify-between items-center z-50">
         <div id="counter" class="font-mono text-3xl font-black text-slate-800 tracking-tighter"></div>
         <div class="flex gap-6">
@@ -56,7 +55,7 @@
                 <i data-lucide="arrow-right" class="w-8 h-8"></i>
             </button>
         </div>
-        <div class="hidden md:block text-slate-600 font-bold uppercase tracking-widest text-xs">Espace = Suivant</div>
+        <div class="hidden md:block text-slate-600 font-bold uppercase tracking-widest text-xs">Utilisez Espace ou Flèches</div>
     </nav>
 
     <script>
@@ -67,192 +66,266 @@
         const slides = [
             // 1. Accueil
             `<div class="text-center max-w-6xl mx-auto">
-                <div class="inline-flex items-center gap-3 mb-10 px-8 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 font-bold uppercase tracking-[0.3em] text-sm animate-pulse shadow-lg shadow-cyan-500/10">
-                    <i data-lucide="zap" class="w-5 h-5"></i> Spécial Orientation Terminale
+                <div class="inline-flex items-center gap-3 mb-10 px-8 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 font-bold uppercase tracking-[0.3em] text-sm animate-pulse">
+                    <i data-lucide="zap" class="w-5 h-5"></i> Orientation Terminale 2026-2030
                 </div>
-                <h1 class="text-8xl md:text-[10rem] font-black font-heading leading-none mb-12 uppercase tracking-tighter">BTS SIO<br><span class="text-transparent bg-clip-text cyber-gradient italic">2030 VISION</span></h1>
-                <p class="text-3xl md:text-5xl text-slate-400 max-w-4xl mx-auto mb-16 font-light leading-tight">Préparez-vous à piloter les <span class="text-white font-bold">Infrastructures</span> et les <span class="text-white font-bold">Algorithmes</span> du futur.</p>
-                <button onclick="nextSlide()" class="px-16 py-8 cyber-gradient text-slate-950 font-black rounded-[2rem] text-3xl btn-action shadow-2xl">LANCER LA SIMULATION</button>
+                <h1 class="text-8xl md:text-[9rem] font-black font-heading leading-none mb-12 uppercase tracking-tighter">BTS SIO<br><span class="text-transparent bg-clip-text cyber-gradient italic">NEW FRONTIER</span></h1>
+                <p class="text-3xl md:text-5xl text-slate-400 max-w-4xl mx-auto mb-16 font-light">Le diplôme qui vous donne les clés du <span class="text-white font-bold">monde numérique</span>.</p>
+                <button onclick="nextSlide()" class="px-16 py-8 cyber-gradient text-slate-950 font-black rounded-[2rem] text-3xl hover:scale-110 transition-transform shadow-2xl">LANCER LA PRÉSENTATION</button>
             </div>`,
 
-            // 2. Définition SISR / SLAM complète
-            `<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch h-[80vh]">
-                <div class="glass-panel p-12 rounded-[3rem] border-cyan-500/20 flex flex-col justify-center space-y-8">
-                    <div class="bg-cyan-500/20 p-6 rounded-3xl w-fit"><i data-lucide="shield" class="w-16 h-16 text-cyan-400"></i></div>
-                    <h2 class="text-5xl font-black font-heading tracking-tight leading-none uppercase">SISR<br><span class="text-2xl text-cyan-400 font-bold tracking-normal opacity-70">Solutions d'Infrastructure, Systèmes et Réseaux</span></h2>
-                    <p class="text-2xl text-slate-400">Devenez le <span class="text-white font-bold">Cyber-Gardien</span>. Vous gérez le Cloud, sécurisez les données et connectez le monde.</p>
-                </div>
-                <div class="glass-panel p-12 rounded-[3rem] border-emerald-500/20 flex flex-col justify-center space-y-8">
-                    <div class="bg-emerald-500/20 p-6 rounded-3xl w-fit"><i data-lucide="code" class="w-16 h-16 text-emerald-400"></i></div>
-                    <h2 class="text-5xl font-black font-heading tracking-tight leading-none uppercase">SLAM<br><span class="text-2xl text-emerald-400 font-bold tracking-normal opacity-70">Solutions Logicielles et Applications Métier</span></h2>
-                    <p class="text-2xl text-slate-400">Devenez l' <span class="text-white font-bold">Architecte IA</span>. Vous codez des applications intelligentes et inventez les services de demain.</p>
-                </div>
-            </div>`,
-
-            // 3. NOUVELLE DIAPO : Test Deepfake (Interactive)
-            `<div class="text-center max-w-6xl mx-auto space-y-12">
-                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">Cyber-Défense : <span class="text-red-500">Alerte Deepfake</span></h2>
-                <p class="text-2xl text-slate-400 italic">Sauriez-vous différencier un humain d'une IA en 2030 ?</p>
-                <div class="grid grid-cols-2 gap-8">
-                    <div class="relative group cursor-pointer overflow-hidden rounded-3xl border-4 border-transparent hover:border-cyan-500 transition-all" onclick="alert('GAGNÉ ! C était l humain. Mais en 2030, l erreur est fatale.')">
-                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800" class="w-full h-80 object-cover opacity-80 group-hover:opacity-100">
-                        <div class="absolute bottom-6 left-6 text-2xl font-black bg-slate-900/80 px-4 py-2 rounded-xl">PHOTO A</div>
-                    </div>
-                    <div class="relative group cursor-pointer overflow-hidden rounded-3xl border-4 border-transparent hover:border-red-500 transition-all" onclick="alert('PERDU ! C était l IA générée par un processeur quantique.')">
-                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800" class="w-full h-80 object-cover opacity-80 group-hover:opacity-100">
-                        <div class="absolute bottom-6 left-6 text-2xl font-black bg-slate-900/80 px-4 py-2 rounded-xl">PHOTO B</div>
-                    </div>
-                </div>
-                <div class="p-8 glass-panel rounded-3xl border-red-500/20"><p class="text-xl font-bold">En SISR, vous apprenez à détecter ces fraudes avant qu'elles ne détruisent une entreprise.</p></div>
-            </div>`,
-
-            // 4. NOUVELLE DIAPO : Voyage de ton Snap (Interactive)
-            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                <div class="space-y-10">
-                    <h2 class="text-6xl font-black font-heading tracking-tight leading-none uppercase">Où va ton Snap ?</h2>
-                    <p class="text-2xl text-slate-400">Une photo de 2Mo parcourt 12 000 km en 0.4s. Voici ce que tu vas maîtriser en SISR :</p>
-                    <div class="space-y-4">
-                        <div class="p-6 glass-panel rounded-2xl flex justify-between items-center group cursor-help hover:bg-white/5" onclick="this.querySelector('span').classList.remove('hidden')">
-                            <span class="text-xl font-bold">1. Chiffrement de ton téléphone</span>
-                            <span class="hidden text-cyan-400 font-mono text-sm px-4 py-1 border border-cyan-500 rounded">SSL/TLS ACTIVÉ</span>
-                        </div>
-                        <div class="p-6 glass-panel rounded-2xl flex justify-between items-center group cursor-help hover:bg-white/5" onclick="this.querySelector('span').classList.remove('hidden')">
-                            <span class="text-xl font-bold">2. Passage par le DataCenter Cloud</span>
-                            <span class="hidden text-emerald-400 font-mono text-sm px-4 py-1 border border-emerald-500 rounded">LATENCE < 10ms</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="relative bg-slate-900 rounded-[3rem] h-96 border-2 border-white/5 flex items-center justify-center overflow-hidden">
-                    <i data-lucide="globe" class="w-64 h-64 text-cyan-900/30 animate-spin-slow"></i>
-                    <div class="absolute w-4 h-4 bg-cyan-500 rounded-full animate-ping"></div>
-                </div>
-            </div>`,
-
-            // 5. Pourquoi coder ? (Version enrichie)
-            `<div class="text-center space-y-12">
-                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">Pourquoi coder en 2030 ?</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
-                    <div class="p-12 glass-panel rounded-[3rem] border-cyan-500/20 space-y-6">
-                        <i data-lucide="brain-circuit" class="w-16 h-16 text-cyan-400 mx-auto"></i>
-                        <h4 class="text-3xl font-black">Piloter l'IA</h4>
-                        <p class="text-lg text-slate-400 italic leading-relaxed">"L'IA est un moteur de Ferrari. Coder, c'est savoir construire et conduire la voiture."</p>
-                    </div>
-                    <div class="p-12 glass-panel rounded-[3rem] border-emerald-500/20 space-y-6 scale-110">
-                        <i data-lucide="sparkles" class="w-16 h-16 text-emerald-400 mx-auto"></i>
-                        <h4 class="text-3xl font-black">Pouvoir Absolu</h4>
-                        <p class="text-lg text-slate-400 italic leading-relaxed">Un codeur peut changer la vie de millions de personnes depuis son canapé.</p>
-                    </div>
-                    <div class="p-12 glass-panel rounded-[3rem] border-yellow-500/20 space-y-6">
-                        <i data-lucide="leaf" class="w-16 h-16 text-yellow-400 mx-auto"></i>
-                        <h4 class="text-3xl font-black">Éthique</h4>
-                        <p class="text-lg text-slate-400 italic leading-relaxed">Nous formons ceux qui empêcheront l'IA de devenir un cauchemar environnemental.</p>
-                    </div>
-                </div>
-            </div>`,
-
-            // 6. NOUVELLE DIAPO : Ton Smartphone vaut de l'or (Interactive)
-            `<div class="text-center space-y-12 max-w-5xl mx-auto">
-                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">Ton smartphone est une <span class="text-yellow-500 italic">MNE D'OR</span></h2>
-                <p class="text-2xl text-slate-400">Clique sur les composants pour voir ton futur salaire de technicien SIO :</p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-                    <div class="p-8 glass-panel rounded-3xl interactive-card" onclick="alert('Expert Cybersécurité (SISR) : 5500€ / mois')">
-                        <i data-lucide="shield-check" class="w-12 h-12 mb-4 text-cyan-400 mx-auto"></i>
-                        <span class="font-bold">MODEM 5G</span>
-                    </div>
-                    <div class="p-8 glass-panel rounded-3xl interactive-card" onclick="alert('Développeur Mobile (SLAM) : 4800€ / mois')">
-                        <i data-lucide="smartphone" class="w-12 h-12 mb-4 text-emerald-400 mx-auto"></i>
-                        <span class="font-bold">INTERFACE UX</span>
-                    </div>
-                    <div class="p-8 glass-panel rounded-3xl interactive-card" onclick="alert('Architecte Cloud (SISR) : 6000€ / mois')">
-                        <i data-lucide="cloud" class="w-12 h-12 mb-4 text-blue-400 mx-auto"></i>
-                        <span class="font-bold">STORAGE</span>
-                    </div>
-                    <div class="p-8 glass-panel rounded-3xl interactive-card" onclick="alert('Ingénieur IA (SLAM) : 7500€ / mois')">
-                        <i data-lucide="cpu" class="w-12 h-12 mb-4 text-purple-400 mx-auto"></i>
-                        <span class="font-bold">NEURAL ENGINE</span>
-                    </div>
-                </div>
-            </div>`,
-
-            // 7. NOUVELLE DIAPO : Écologie du numérique (Interactive)
+            // 2. SISR Complet
             `<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
                 <div class="space-y-10">
-                    <h2 class="text-6xl font-black font-heading tracking-tight leading-none uppercase">Numérique :<br><span class="text-emerald-500 italic">Pollution Invisible</span></h2>
-                    <p class="text-2xl text-slate-400">Le numérique pollue plus que l'aviation mondiale. <span class="text-white">Le défi du SIO ?</span></p>
-                    <div class="glass-panel p-8 rounded-3xl border-emerald-500/30">
-                        <h4 class="text-2xl font-bold mb-4">La règle d'or du SIO 2030 :</h4>
-                        <p class="text-xl">"Un codeur intelligent écrit un programme qui consomme peu d'énergie."</p>
-                    </div>
+                    <div class="bg-cyan-500/20 p-6 rounded-3xl w-fit"><i data-lucide="shield" class="w-16 h-16 text-cyan-400"></i></div>
+                    <h2 class="text-6xl font-black font-heading uppercase leading-none">SISR</h2>
+                    <h3 class="text-3xl text-cyan-400 font-bold uppercase">Solutions d'Infrastructure, Systèmes et Réseaux</h3>
+                    <p class="text-2xl text-slate-400 leading-relaxed italic">"Le Cloud, la Cyber-sécurité et les Réseaux n'auront plus de secrets pour vous. Vous êtes le garant de la continuité du monde connecté."</p>
                 </div>
-                <div class="p-10 glass-panel rounded-[3rem] text-center space-y-8 bg-emerald-500/5 border-emerald-500/10">
-                    <div class="text-5xl font-black text-emerald-400">VRAI OU FAUX ?</div>
-                    <p class="text-xl">"Regarder une vidéo en 4K pollue plus qu'un trajet de 2km en voiture ?"</p>
-                    <div class="flex gap-4">
-                        <button onclick="alert('Vrai ! Le transfert de données 4K demande une énergie colossale aux serveurs.')" class="flex-1 py-4 bg-emerald-500 text-slate-950 font-black rounded-xl">VRAI</button>
-                        <button onclick="alert('Faux ! Pas tout à fait, mais on s en rapproche à cause de la consommation des datacenters.')" class="flex-1 py-4 border border-white/20 rounded-xl font-bold">FAUX</button>
+                <div class="relative"><div class="absolute inset-0 bg-cyan-500/20 blur-3xl"></div><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800" class="relative rounded-[3rem] border border-white/10 shadow-2xl"></div>
+            </div>`,
+
+            // 3. SLAM Complet
+            `<div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div class="relative"><div class="absolute inset-0 bg-emerald-500/20 blur-3xl"></div><img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800" class="relative rounded-[3rem] border border-white/10 shadow-2xl"></div>
+                <div class="space-y-10">
+                    <div class="bg-emerald-500/20 p-6 rounded-3xl w-fit"><i data-lucide="code" class="w-16 h-16 text-emerald-400"></i></div>
+                    <h2 class="text-6xl font-black font-heading uppercase leading-none">SLAM</h2>
+                    <h3 class="text-3xl text-emerald-400 font-bold uppercase">Solutions Logicielles et Applications Métier</h3>
+                    <p class="text-2xl text-slate-400 leading-relaxed italic">"Devenez un créateur de solutions. Du développement web à l'Intelligence Artificielle, vous codez le futur des entreprises."</p>
+                </div>
+            </div>`,
+
+            // 4. Pourquoi SIO ?
+            `<div class="text-center max-w-7xl mx-auto space-y-16">
+                <h2 class="text-6xl font-black font-heading uppercase">Pourquoi choisir le SIO ?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
+                    <div class="p-10 glass-panel rounded-[2.5rem] border-cyan-500/20"><h4 class="text-3xl font-black text-cyan-400 mb-4 tracking-tighter">ALTERNANCE</h4><p class="text-lg text-slate-400 leading-relaxed">Étudiez gratuitement et gagnez un salaire dès la première année. L'expérience pro avant tout.</p></div>
+                    <div class="p-10 glass-panel rounded-[2.5rem] border-emerald-500/20"><h4 class="text-3xl font-black text-emerald-400 mb-4 tracking-tighter">CHÔMAGE 0%</h4><p class="text-lg text-slate-400 leading-relaxed">Le secteur recrute massivement. Vous aurez plusieurs offres avant même d'être diplômé.</p></div>
+                    <div class="p-10 glass-panel rounded-[2.5rem] border-yellow-500/20"><h4 class="text-3xl font-black text-yellow-400 mb-4 tracking-tighter">ÉVOLUTION</h4><p class="text-lg text-slate-400 leading-relaxed">L'informatique est partout. Vous pouvez travailler dans le luxe, le sport, la santé ou le spatial.</p></div>
+                </div>
+            </div>`,
+
+            // 5. Interaction 1 : Deepfake
+            `<div class="text-center max-w-6xl mx-auto space-y-12">
+                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">Interaction #1 : <span class="text-red-500">Alerte Deepfake</span></h2>
+                <p class="text-2xl text-slate-400 italic">Sauriez-vous différencier un humain d'une IA ?</p>
+                <div class="grid grid-cols-2 gap-8">
+                    <div class="relative group cursor-pointer overflow-hidden rounded-3xl border-4 border-transparent hover:border-cyan-500 transition-all" onclick="alert('GAGNÉ ! C était l humain. Mais l IA progresse chaque jour.')">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800" class="w-full h-80 object-cover opacity-80 group-hover:opacity-100"><div class="absolute bottom-6 left-6 text-2xl font-black bg-slate-900/80 px-4 py-2 rounded-xl">PHOTO A</div>
+                    </div>
+                    <div class="relative group cursor-pointer overflow-hidden rounded-3xl border-4 border-transparent hover:border-red-500 transition-all" onclick="alert('PERDU ! C était l IA. En SISR, vous apprenez à bloquer ces fraudes.')">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800" class="w-full h-80 object-cover opacity-80 group-hover:opacity-100"><div class="absolute bottom-6 left-6 text-2xl font-black bg-slate-900/80 px-4 py-2 rounded-xl">PHOTO B</div>
                     </div>
                 </div>
             </div>`,
 
-            // 8. NOUVELLE DIAPO : App Generator (Interactive)
-            `<div class="text-center space-y-12">
-                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">SLAM : Ton <span class="text-emerald-400">IDÉE DE GÉNIE</span></h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="p-10 glass-panel rounded-[2.5rem] interactive-card" onclick="alert('Super idée ! Tu apprendras à coder cette IA de tri de déchets en BTS SIO.')">
-                        <i data-lucide="leaf" class="w-12 h-12 mb-4 text-emerald-400 mx-auto"></i>
-                        <h4 class="text-2xl font-bold uppercase mb-4">L'App Écolo</h4>
-                        <p class="text-sm opacity-60">Une IA qui scanne tes poubelles pour optimiser ton tri.</p>
+            // 6. Interaction 2 : Voyage Snap
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10">
+                    <h2 class="text-6xl font-black font-heading uppercase leading-tight tracking-tighter">Interaction #2 :<br>Le voyage de ton Snap</h2>
+                    <p class="text-2xl text-slate-400">Cliquez pour voir les étapes techniques gérées par un technicien SISR :</p>
+                    <div class="space-y-4">
+                        <button class="w-full p-6 glass-panel rounded-2xl text-left hover:bg-white/10" onclick="alert('Étape 1 : Chiffrement SSL/TLS pour que personne n intercepte ta photo.')">1. CHIFFREMENT SUR TON TÉLÉPHONE</button>
+                        <button class="w-full p-6 glass-panel rounded-2xl text-left hover:bg-white/10" onclick="alert('Étape 2 : Routage via fibre optique et serveurs CDN pour une latence < 10ms.')">2. ROUTAGE MONDIAL HAUTE VITESSE</button>
                     </div>
-                    <div class="p-10 glass-panel rounded-[2.5rem] interactive-card" onclick="alert('Génial ! La réalité augmentée et les serveurs temps-réel sont au coeur du SISR.')">
-                        <i data-lucide="eye" class="w-12 h-12 mb-4 text-cyan-400 mx-auto"></i>
-                        <h4 class="text-2xl font-bold uppercase mb-4">AR Gaming</h4>
-                        <p class="text-sm opacity-60">Transformer ton lycée en champ de bataille multijoueur.</p>
-                    </div>
-                    <div class="p-10 glass-panel rounded-[2.5rem] interactive-card" onclick="alert('Noble cause ! Le développement d applications métier est le pilier du SLAM.')">
-                        <i data-lucide="heart-pulse" class="w-12 h-12 mb-4 text-red-400 mx-auto"></i>
-                        <h4 class="text-2xl font-bold uppercase mb-4">Med-Tech</h4>
-                        <p class="text-sm opacity-60">Une app qui diagnostique ton état de santé par ta voix.</p>
-                    </div>
+                </div>
+                <div class="bg-slate-900 rounded-[3rem] h-[500px] border-2 border-white/5 flex items-center justify-center relative overflow-hidden">
+                    <i data-lucide="globe" class="w-64 h-64 text-cyan-900/20 animate-spin-slow"></i>
+                    <div class="absolute w-6 h-6 bg-cyan-500 rounded-full animate-ping"></div>
                 </div>
             </div>`,
 
-            // 9. Pendu (ADAPTATION)
+            // 7. IA Exosquelette
+            `<div class="text-center max-w-5xl mx-auto space-y-12">
+                <h2 class="text-6xl font-black font-heading uppercase leading-none tracking-tighter">L'IA n'est pas votre ennemie</h2>
+                <div class="p-12 glass-panel rounded-[3rem] border-cyan-500/30">
+                    <p class="text-4xl font-light leading-relaxed italic">"L'informaticien qui utilise l'IA remplacera celui qui ne l'utilise pas."</p>
+                </div>
+                <p class="text-2xl text-slate-400">En SLAM, l'IA devient votre <span class="text-white font-bold underline">exosquelette</span> pour coder 10x plus vite.</p>
+            </div>`,
+
+            // 8. Code Assisté
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-8">
+                    <h2 class="text-5xl font-black font-heading uppercase tracking-tighter">2026 : Le code assisté</h2>
+                    <p class="text-xl text-slate-400">Copilot et Cursor font 80% du travail. Votre valeur ? Savoir <span class="text-white font-bold">architecturer</span> et <span class="text-white font-bold">sécuriser</span> le tout.</p>
+                </div>
+                <div class="font-mono bg-black p-10 rounded-3xl border border-white/10 text-cyan-400 shadow-2xl">
+                    <p class="opacity-50">// Prompt: Créer une API sécurisée...</p>
+                    <p class="animate-pulse">_ Generating secure routes...</p>
+                    <p class="text-white mt-4 font-bold">> DONE in 0.4s</p>
+                </div>
+            </div>`,
+
+            // 9. Prompt Engineering
+            `<div class="text-center max-w-4xl mx-auto space-y-12">
+                <i data-lucide="sparkles" class="w-32 h-32 text-cyan-400 mx-auto animate-bounce"></i>
+                <h2 class="text-6xl font-black font-heading uppercase leading-none tracking-tighter">Savoir parler aux machines</h2>
+                <p class="text-2xl text-slate-400 leading-relaxed">Le "Prompting" n'est pas un gadget. C'est l'art de décomposer un problème complexe en instructions logiques précises.</p>
+            </div>`,
+
+            // 10. Pourquoi coder ? (Anti-vide)
+            `<div class="text-center max-w-7xl mx-auto space-y-16">
+                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">Pourquoi coder alors ?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="p-10 glass-panel rounded-[3rem] border-white/10"><h4 class="text-3xl font-black mb-6">COMPRENDRE</h4><p class="text-slate-400">Pour corriger l'IA quand elle fait des erreurs fatales.</p></div>
+                    <div class="p-10 glass-panel rounded-[3rem] border-white/10"><h4 class="text-3xl font-black mb-6">OPTIMISER</h4><p class="text-slate-400">Pour réduire l'impact énergétique colossal des serveurs.</p></div>
+                    <div class="p-10 glass-panel rounded-[3rem] border-white/10"><h4 class="text-3xl font-black mb-6">INNOVER</h4><p class="text-slate-400">Pour créer les IA de demain, pas juste utiliser les anciennes.</p></div>
+                </div>
+            </div>`,
+
+            // 11. AIOps (SISR)
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10">
+                    <h2 class="text-5xl font-black font-heading uppercase tracking-tighter text-cyan-400">AIOps (SISR)</h2>
+                    <p class="text-2xl text-slate-400 italic">"En 2028, les réseaux se réparent tout seuls."</p>
+                    <ul class="space-y-6">
+                        <li class="flex items-center gap-4 text-xl"><i data-lucide="check-circle" class="text-emerald-500"></i> Auto-détection d'intrusion</li>
+                        <li class="flex items-center gap-4 text-xl"><i data-lucide="check-circle" class="text-emerald-500"></i> Maintenance prédictive des serveurs</li>
+                    </ul>
+                </div>
+                <div class="bg-cyan-500/5 border border-cyan-500/20 rounded-[3rem] p-12 text-center shadow-inner"><i data-lucide="cpu" class="w-48 h-48 text-cyan-900 animate-pulse mx-auto"></i></div>
+            </div>`,
+
+            // 12. Dark IA
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="text-center"><i data-lucide="shield-alert" class="w-64 h-64 text-red-900 mx-auto opacity-50"></i></div>
+                <div class="space-y-10 p-12 border-2 border-red-500/20 bg-red-500/5 rounded-[3rem]">
+                    <h2 class="text-6xl font-black text-red-500 uppercase leading-none tracking-tighter">DARK IA</h2>
+                    <p class="text-2xl text-slate-300">Virus auto-adaptatifs, Phishing 2.0 indétectable... La menace est invisible.</p>
+                    <p class="text-xl font-bold uppercase text-red-400">Le technicien SISR est le rempart.</p>
+                </div>
+            </div>`,
+
+            // 13. Souveraineté
+            `<div class="text-center max-w-5xl mx-auto space-y-16">
+                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter leading-none">Souveraineté Numérique</h2>
+                <div class="flex justify-center gap-10 font-bold text-2xl italic">
+                    <span class="px-8 py-3 bg-white/5 rounded-full border border-white/10">Mistral AI 🇫🇷</span>
+                    <span class="px-8 py-3 bg-white/5 rounded-full border border-white/10">Llama 🇺🇸</span>
+                </div>
+                <p class="text-3xl text-slate-400 leading-relaxed italic">"Le BTS SIO forme les experts qui bâtiront l'indépendance de l'Europe."</p>
+            </div>`,
+
+            // 14. Interaction 3 : Smartphone Mine d'Or
+            `<div class="text-center space-y-12 max-w-6xl mx-auto">
+                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">Interaction #3 : <br>Ton Smartphone vaut de l'or</h2>
+                <p class="text-2xl text-slate-400 mb-10">Cliquez sur les composants pour voir le salaire futur :</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="p-10 glass-panel rounded-[2rem] cursor-pointer hover:scale-105 transition-all" onclick="alert('Cybersécurité : 5200€ / mois expert.')"><i data-lucide="shield-check" class="w-16 h-16 mb-6 text-cyan-400 mx-auto"></i><span class="font-bold text-xl uppercase">MODEM 6G</span></div>
+                    <div class="p-10 glass-panel rounded-[2rem] cursor-pointer hover:scale-105 transition-all" onclick="alert('UX Design / SLAM : 4600€ / mois expert.')"><i data-lucide="smartphone" class="w-16 h-16 mb-6 text-emerald-400 mx-auto"></i><span class="font-bold text-xl uppercase">INTERFACE</span></div>
+                    <div class="p-10 glass-panel rounded-[2rem] cursor-pointer hover:scale-105 transition-all" onclick="alert('Cloud Architect : 5800€ / mois expert.')"><i data-lucide="cloud" class="w-16 h-16 mb-6 text-blue-400 mx-auto"></i><span class="font-bold text-xl uppercase">STORAGE</span></div>
+                    <div class="p-10 glass-panel rounded-[2rem] cursor-pointer hover:scale-105 transition-all" onclick="alert('Ingénieur IA : 7200€ / mois expert.')"><i data-lucide="cpu" class="w-16 h-16 mb-6 text-purple-400 mx-auto"></i><span class="font-bold text-xl uppercase">CHIPSET IA</span></div>
+                </div>
+            </div>`,
+
+            // 15. Interaction 4 : Pollution Numérique
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10">
+                    <h2 class="text-6xl font-black font-heading uppercase leading-tight tracking-tighter">Interaction #4 :<br><span class="text-emerald-500">Pollution Invisible</span></h2>
+                    <p class="text-2xl text-slate-400">"Regarder une vidéo en 4K pollue-t-il plus qu'un trajet de 2km en voiture ?"</p>
+                    <div class="flex gap-6 mt-10">
+                        <button onclick="alert('VRAI ! Le traitement massif des données 4K dans les datacenters est ultra-énergivore.')" class="flex-1 py-8 bg-emerald-500 text-slate-950 font-black rounded-3xl text-2xl shadow-2xl">VRAI</button>
+                        <button onclick="alert('FAUX... mais l écart se réduit ! En SIO, on apprend le Green-IT.')" class="flex-1 py-8 border-2 border-white/20 rounded-3xl text-2xl font-bold">FAUX</button>
+                    </div>
+                </div>
+                <div class="bg-emerald-500/5 p-12 rounded-[4rem] text-center border border-emerald-500/20"><i data-lucide="leaf" class="w-64 h-64 text-emerald-900 mx-auto"></i></div>
+            </div>`,
+
+            // 16. Interaction 5 : App Dream Generator
+            `<div class="text-center max-w-6xl mx-auto space-y-16">
+                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter leading-none">Interaction #5 :<br>Ton projet de rêve</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
+                    <div class="p-10 glass-panel rounded-[3rem] cursor-pointer hover:border-emerald-500 transition-all" onclick="alert('SLAM est ton futur ! Tu apprendras à coder des modèles prédictifs.')"><i data-lucide="heart-pulse" class="w-16 h-16 mb-6 text-red-500 mx-auto"></i><h4 class="font-black text-xl mb-4 uppercase">SANTE IA</h4><p class="text-sm opacity-60 italic">Détecter les maladies via la voix.</p></div>
+                    <div class="p-10 glass-panel rounded-[3rem] cursor-pointer hover:border-cyan-500 transition-all" onclick="alert('SISR est fait pour toi ! La gestion des serveurs mondiaux est ton domaine.')"><i data-lucide="gamepad" class="w-16 h-16 mb-6 text-cyan-400 mx-auto"></i><h4 class="font-black text-xl mb-4 uppercase">CLOUD GAMING</h4><p class="text-sm opacity-60 italic">Jouer en 8K sans console.</p></div>
+                    <div class="p-10 glass-panel rounded-[3rem] cursor-pointer hover:border-yellow-500 transition-all" onclick="alert('Mixte SISR/SLAM ! Sécurité et interface utilisateur.')"><i data-lucide="briefcase" class="w-16 h-16 mb-6 text-yellow-500 mx-auto"></i><h4 class="font-black text-xl mb-4 uppercase">FINTECH</h4><p class="text-sm opacity-60 italic">Une banque sécurisée par IA.</p></div>
+                </div>
+            </div>`,
+
+            // 17. Créativité vs Algorithme
+            `<div class="grid grid-cols-2 gap-10 max-w-6xl mx-auto">
+                <div class="p-12 glass-panel rounded-[3rem] border-white/5 space-y-6 opacity-60">
+                    <h3 class="text-4xl font-black text-slate-500 uppercase">L'IA</h3>
+                    <p class="text-xl">Vitesse, Synthèse, Calcul, Routine.</p>
+                </div>
+                <div class="p-12 glass-panel rounded-[3rem] border-cyan-500/30 space-y-6">
+                    <h3 class="text-4xl font-black text-white uppercase">VOUS</h3>
+                    <p class="text-xl italic leading-relaxed">Créativité, Éthique, Empathie, Jugement.</p>
+                </div>
+            </div>`,
+
+            // 18. JEU PENDU
             `<div id="hangman-hook"></div>`,
 
-            // 10. Chiffres Géants
-            `<div class="text-center space-y-20">
-                <h2 class="text-6xl font-black font-heading uppercase">Le secteur qui ne dort jamais</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto">
-                    <div class="group">
-                        <div class="text-[10rem] font-black text-cyan-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">38K</div>
-                        <h4 class="text-2xl font-bold text-slate-500 uppercase tracking-widest">Salaire Junior (€)</h4>
+            // 19. Cycle de vie
+            `<div class="text-center max-w-4xl mx-auto space-y-16">
+                <h2 class="text-5xl font-black font-heading uppercase tracking-tighter">Apprendre à désapprendre</h2>
+                <div class="flex justify-between items-center opacity-40">
+                    <div class="flex flex-col items-center"><div class="w-5 h-5 bg-cyan-500 rounded-full mb-3"></div><span class="text-xs uppercase font-black">2024: Python</span></div>
+                    <div class="flex-1 h-px bg-slate-700 mx-6"></div>
+                    <div class="flex flex-col items-center"><div class="w-5 h-5 bg-emerald-500 rounded-full mb-3"></div><span class="text-xs uppercase font-black">2026: Prompting</span></div>
+                    <div class="flex-1 h-px bg-slate-700 mx-6"></div>
+                    <div class="flex flex-col items-center"><div class="w-5 h-5 bg-yellow-500 rounded-full mb-3"></div><span class="text-xs uppercase font-black">2028: Quantum</span></div>
+                </div>
+                <p class="text-2xl text-slate-400 leading-relaxed italic">"On n'apprend pas un métier, on apprend à évoluer."</p>
+            </div>`,
+
+            // 20. SIO Cockpit
+            `<div class="text-center max-w-5xl mx-auto space-y-10">
+                <h2 class="text-7xl font-black font-heading uppercase leading-none tracking-tighter">Le BTS SIO est votre <span class="text-cyan-400">COCKPIT</span></h2>
+                <p class="text-3xl text-slate-500 font-light italic leading-tight">Ne soyez pas le passager de l'Intelligence Artificielle. Soyez son pilote.</p>
+            </div>`,
+
+            // 21. Mission SISR (Solutions d'Infrastructure, Systèmes et Réseaux)
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="space-y-10">
+                    <h2 class="text-5xl font-black font-heading uppercase tracking-tighter text-cyan-400 leading-none">Mission SISR</h2>
+                    <p class="text-2xl text-slate-300 italic leading-relaxed">"Installer une infrastructure Cloud ultra-sécurisée pour une équipe de Formule 1."</p>
+                    <div class="p-8 glass-panel rounded-3xl border-cyan-500/20 font-mono text-cyan-500 text-sm">
+                        <p>> Deploying security protocol alpha...</p>
+                        <p>> Checking data encryption...</p>
+                        <p class="text-white font-black mt-2">> SYSTEM SECURE (UPTIME 100%)</p>
                     </div>
-                    <div class="group">
-                        <div class="text-[10rem] font-black text-emerald-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">98%</div>
-                        <h4 class="text-2xl font-bold text-slate-500 uppercase tracking-widest">Taux d'Embauche</h4>
-                    </div>
-                    <div class="group">
-                        <div class="text-[10rem] font-black text-yellow-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">+200k</div>
-                        <h4 class="text-2xl font-bold text-slate-500 uppercase tracking-widest">Offres en SIO</h4>
+                </div>
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] shadow-2xl h-[500px] object-cover">
+            </div>`,
+
+            // 22. Mission SLAM (Solutions Logicielles et Applications Métier)
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <img src="https://images.unsplash.com/photo-1555099962-41d06ee9360c?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] shadow-2xl h-[500px] object-cover">
+                <div class="space-y-10">
+                    <h2 class="text-5xl font-black font-heading uppercase tracking-tighter text-emerald-400 leading-none">Mission SLAM</h2>
+                    <p class="text-2xl text-slate-300 italic leading-relaxed">"Développer une application mobile capable de traduire instantanément toutes les langues via IA."</p>
+                    <div class="p-8 glass-panel rounded-3xl border-emerald-500/20 font-mono text-emerald-500 text-sm">
+                        <p>import neural_translator</p>
+                        <p>model.train(dataset_world)</p>
+                        <p class="text-white font-black mt-2">> APP READY FOR GOOGLE PLAY</p>
                     </div>
                 </div>
             </div>`,
 
-            // 11. Quiz Final (7 étapes narratives)
+            // 23. Chiffres Géants
+            `<div class="text-center space-y-20">
+                <h2 class="text-6xl font-black font-heading uppercase tracking-tighter leading-none">Le secteur qui ne dort jamais</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-7xl mx-auto">
+                    <div class="group"><div class="text-[10rem] font-black text-cyan-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">38K</div><h4 class="text-2xl font-bold text-slate-500 uppercase">Salaire Junior (€)</h4></div>
+                    <div class="group"><div class="text-[10rem] font-black text-emerald-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">98%</div><h4 class="text-2xl font-bold text-slate-500 uppercase">Embauche directe</h4></div>
+                    <div class="group"><div class="text-[10rem] font-black text-yellow-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">+200k</h4><h4 class="text-2xl font-bold text-slate-500 uppercase">Offres / an</h4></div>
+                </div>
+            </div>`,
+
+            // 24. Quiz Final (7 étapes narratives)
             `<div id="quiz-hook"></div>`,
 
-            // 12. Conclusion
+            // 25. Conclusion
             `<div class="text-center max-w-6xl mx-auto space-y-16">
-                <h2 class="text-[8rem] font-black font-heading mb-8 italic tracking-tighter leading-none">PRÊTS POUR <br><span class="text-cyan-400">L'ENVOLÉE ?</span></h2>
+                <h2 class="text-[9rem] font-black font-heading mb-8 italic tracking-tighter leading-none">CODE <span class="text-cyan-400">THE WORLD</span></h2>
                 <div class="glass-panel p-16 rounded-[4rem] flex flex-col md:flex-row items-center justify-center gap-20 shadow-2xl border-white/20">
-                    <div class="bg-white p-8 rounded-[3rem] shadow-2xl hover:rotate-3 transition-transform cursor-pointer">
-                        <i data-lucide="qr-code" class="w-48 h-48 text-slate-900"></i>
-                    </div>
-                    <div class="text-left space-y-8 max-w-md">
+                    <div class="bg-white p-8 rounded-[3rem] shadow-2xl hover:rotate-3 transition-transform cursor-pointer"><i data-lucide="qr-code" class="w-48 h-48 text-slate-900"></i></div>
+                    <div class="text-left space-y-10 max-w-md">
                         <p class="text-3xl font-bold text-slate-300 italic leading-relaxed">"Ne subissez pas le futur. Soyez celui qui le programme."</p>
-                        <button onclick="window.open('https://parcoursup.fr')" class="w-full py-8 cyber-gradient rounded-[2rem] text-slate-950 font-black text-4xl hover:scale-105 transition-all shadow-2xl flex justify-between px-10 items-center">
-                            POSTULER <i data-lucide="arrow-right" class="w-12 h-12"></i>
-                        </button>
+                        <button onclick="window.open('https://parcoursup.fr')" class="w-full py-8 cyber-gradient rounded-[2rem] text-slate-950 font-black text-4xl hover:scale-105 transition-all shadow-2xl flex justify-between px-10 items-center">POSTULER <i data-lucide="arrow-right" class="w-12 h-12"></i></button>
                     </div>
                 </div>
             </div>`
@@ -272,8 +345,10 @@
             const container = document.getElementById('main-content');
             container.innerHTML = `<div class="slide active">${slides[currentIdx]}</div>`;
             document.getElementById('counter').innerText = `${String(currentIdx + 1).padStart(2, '0')} / ${slides.length}`;
-            if (currentIdx === 8) initHangman();
-            if (currentIdx === 10) initQuiz();
+            
+            if (currentIdx === 17) initHangman();
+            if (currentIdx === 23) initQuiz();
+
             renderProgress();
             lucide.createIcons();
         }
@@ -292,14 +367,13 @@
                 </div>
             `;
             const wordDiv = document.getElementById('h-word');
-            word.split('').forEach(l => wordDiv.innerHTML += `<div class="w-14 h-24 border-b-8 border-slate-800 text-7xl font-black flex items-center justify-center text-transparent transition-all" data-l="${l}">_</div>`);
+            word.split('').forEach(l => wordDiv.innerHTML += `<div class="w-14 h-24 border-b-8 border-slate-800 text-7xl font-black flex items-center justify-center text-transparent" data-l="${l}">_</div>`);
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').forEach(l => {
                 const b = document.createElement('button');
                 b.className = "w-14 h-14 bg-white/5 border border-white/10 rounded-2xl font-black text-2xl hover:bg-white/20 transition-all";
                 b.innerText = l;
                 b.onclick = () => {
-                    b.disabled = true;
-                    b.style.opacity = "0.1";
+                    b.disabled = true; b.style.opacity = "0.1";
                     if(word.includes(l)) document.querySelectorAll(`[data-l="${l}"]`).forEach(el => { el.innerText = l; el.className = "w-14 h-24 border-b-8 border-cyan-500 text-7xl font-black flex items-center justify-center text-white scale-110"; });
                 };
                 document.getElementById('h-kb').appendChild(b);
@@ -307,46 +381,29 @@
         }
 
         const quizQuestions = [
-            { q: "Je préfère m'assurer que personne ne peut entrer dans mon ordinateur plutôt que d'en changer le design.", a: ["C'est mon tempérament (SISR)", "Pas vraiment (SLAM)"], s: [-1, 1] },
-            { q: "Quand je vois une application, je me demande tout de suite comment elle a été programmée.", a: ["Toujours (SLAM)", "Pas forcément (SISR)"], s: [1, -1] },
-            { q: "Je trouve plus satisfaisant de configurer un réseau wifi ultra-rapide que de créer une page web.", a: ["Totalement (SISR)", "Plutôt l'inverse (SLAM)"], s: [-1, 1] },
-            { q: "L'idée de développer un assistant intelligent qui répond aux gens me passionne vraiment.", a: ["C'est mon rêve (SLAM)", "Bof (SISR)"], s: [1, -1] },
-            { q: "Je me sens plus à l'aise avec des lignes de commande Linux qu'avec du design graphique.", a: ["C'est clair (SISR)", "Non, j'aime le visuel (SLAM)"], s: [-1, 1] },
-            { q: "Je préfère inventer une nouvelle fonctionnalité utile pour des milliers d'utilisateurs.", a: ["OUI (SLAM)", "Je préfère sécuriser (SISR)"], s: [1, -1] },
-            { q: "Si un serveur tombe en panne, je veux être le héros qui remet tout en ligne en 2 minutes.", a: ["C'est moi ça (SISR)", "Chacun son job (SLAM)"], s: [-1, 1] }
+            { q: "Face à un bug critique, ma réaction naturelle est de plonger dans le code pour réécrire l'algorithme.", a: ["C'est moi ça ! (SLAM)", "Pas trop, je préfère vérifier le serveur (SISR)"], s: [1, -1] },
+            { q: "L'idée de configurer une infrastructure Cloud capable de résister à une cyber-attaque mondiale m'excite.", a: ["Totalement (SISR)", "Un peu technique pour moi (SLAM)"], s: [-1, 1] },
+            { q: "Je préfère passer ma journée à designer une interface magnifique que personne n'a jamais vue.", a: ["OUI (SLAM)", "Non, je veux de la performance brute (SISR)"], s: [1, -1] },
+            { q: "Quand je pense à l'IA, je veux savoir comment l'entraîner plutôt que comment l'installer sur un réseau.", a: ["L'entraîner ! (SLAM)", "L'installer ! (SISR)"], s: [1, -1] },
+            { q: "Si je devais choisir, je préférerais être celui qui crée le jeu vidéo plutôt que celui qui gère les serveurs multijoueurs.", a: ["Le Créateur (SLAM)", "Le Gardien (SISR)"], s: [1, -1] },
+            { q: "Les lignes de commande Linux me procurent un sentiment de puissance absolue.", a: ["C'est mon univers (SISR)", "Un mal nécessaire (SLAM)"], s: [-1, 1] },
+            { q: "Ma vision du succès est une application utilisée par des millions de personnes sur leur smartphone.", a: ["Exactement (SLAM)", "Je préfère un système invisible mais vital (SISR)"], s: [1, -1] }
         ];
 
         function initQuiz() {
             const hook = document.getElementById('quiz-hook');
             if(quizStep >= quizQuestions.length) {
                 const res = score > 0 ? "SLAM 🚀<br><span class='text-2xl font-normal opacity-50 uppercase tracking-widest'>Solutions Logicielles et Applications Métier</span>" : "SISR 🛡️<br><span class='text-2xl font-normal opacity-50 uppercase tracking-widest'>Solutions d'Infrastructure, Systèmes et Réseaux</span>";
-                hook.innerHTML = `<div class="text-center space-y-12"><h3 class="text-4xl font-black italic text-cyan-400 uppercase tracking-widest">VERDICT DE L'IA :</h3><h2 class="text-8xl md:text-9xl font-black tracking-tighter uppercase animate-bounce leading-none">${res}</h2></div>`;
+                hook.innerHTML = `<div class="text-center space-y-12"><h3 class="text-4xl font-black italic text-cyan-400 uppercase tracking-widest">VERDICT :</h3><h2 class="text-8xl font-black uppercase animate-bounce leading-none">${res}</h2></div>`;
                 return;
             }
             const q = quizQuestions[quizStep];
-            hook.innerHTML = `
-                <div class="max-w-5xl mx-auto text-center space-y-20">
-                    <span class="text-cyan-400 font-mono text-2xl font-bold uppercase tracking-widest">Question ${quizStep + 1} / 7</span>
-                    <h2 class="text-5xl font-black uppercase tracking-tight leading-tight">${q.q}</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
-                        <button onclick="handleQuiz(0)" class="p-12 glass-panel rounded-[3rem] text-3xl font-black transition-all border-white/10 hover:border-cyan-500">${q.a[0]}</button>
-                        <button onclick="handleQuiz(1)" class="p-12 glass-panel rounded-[3rem] text-3xl font-black transition-all border-white/10 hover:border-emerald-500">${q.a[1]}</button>
-                    </div>
-                </div>
-            `;
+            hook.innerHTML = `<div class="max-w-5xl mx-auto text-center space-y-20"><span class="text-cyan-400 font-mono text-2xl uppercase tracking-widest">Étape ${quizStep + 1} / 7</span><h2 class="text-5xl font-black uppercase leading-tight">${q.q}</h2><div class="grid grid-cols-1 md:grid-cols-2 gap-10"><button onclick="handleQuiz(0)" class="p-12 glass-panel rounded-[3rem] text-3xl font-black hover:border-cyan-500">${q.a[0]}</button><button onclick="handleQuiz(1)" class="p-12 glass-panel rounded-[3rem] text-3xl font-black hover:border-emerald-500">${q.a[1]}</button></div></div>`;
         }
 
-        window.handleQuiz = (idx) => { 
-            score += quizQuestions[quizStep].s[idx];
-            quizStep++; 
-            initQuiz(); 
-        };
+        window.handleQuiz = (idx) => { score += quizQuestions[quizStep].s[idx]; quizStep++; initQuiz(); };
 
-        window.addEventListener('keydown', (e) => { 
-            if(e.key === 'ArrowRight' || e.key === ' ') nextSlide(); 
-            if(e.key === 'ArrowLeft') prevSlide(); 
-        });
-
+        window.addEventListener('keydown', (e) => { if(e.key === 'ArrowRight' || e.key === ' ') nextSlide(); if(e.key === 'ArrowLeft') prevSlide(); });
         updateSlide();
     </script>
 </body>
