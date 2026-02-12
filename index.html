@@ -17,7 +17,7 @@
             overflow: hidden;
         }
         .font-heading {
-            font-family: 'Space+Grotesk', sans-serif;
+            font-family: 'Space Grotesk', sans-serif;
         }
         .cyber-gradient {
             background: linear-gradient(135deg, #06b6d4 0%, #22c55e 100%);
@@ -51,12 +51,15 @@
     "lucide-react": "https://esm.sh/lucide-react@^0.563.0",
     "react/": "https://esm.sh/react@^19.2.4/",
     "react": "https://esm.sh/react@^19.2.4",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react-dom": "https://esm.sh/react-dom@^19.2.4"
   }
 }
 </script>
 </head>
 <body>
     <div id="root"></div>
+    <!-- Cette ligne est cruciale pour charger votre code sur GitHub Pages -->
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>
