@@ -5,45 +5,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTS SIO 2030 - Prospective</title>
-    <!-- Bibliothèques ultra-légères via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617;
-            color: #f8fafc;
-            overflow: hidden;
-            height: 100vh;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow: hidden; height: 100vh; }
         .font-heading { font-family: 'Space Grotesk', sans-serif; }
         .cyber-gradient { background: linear-gradient(135deg, #06b6d4 0%, #22c55e 100%); }
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .slide {
-            display: none;
-            height: 100%;
-            flex-direction: column;
-            justify-content: center;
-            animation: slideIn 0.5s ease-out forwards;
-        }
+        .glass-panel { background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .slide { display: none; height: 100%; flex-direction: column; justify-content: center; animation: fadeIn 0.4s ease-out forwards; }
         .slide.active { display: flex; }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .btn-nav {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .btn-nav:hover { transform: scale(1.1); }
-        .btn-nav:active { transform: scale(0.95); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .hangman-btn:disabled { opacity: 0.2; cursor: not-allowed; }
+        .quiz-option:hover { border-color: #06b6d4; background: rgba(6, 182, 212, 0.1); }
     </style>
 <script type="importmap">
 {
@@ -58,132 +34,217 @@
 </head>
 <body class="bg-slate-950 text-slate-100">
     
-    <!-- Background Animé -->
+    <!-- Background -->
     <div class="fixed inset-0 pointer-events-none z-0">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(15,23,42,1)_0%,rgba(2,6,23,1)_100%)]"></div>
         <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-900/10 rounded-full blur-[120px] animate-pulse"></div>
         <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-green-900/10 rounded-full blur-[120px] animate-pulse"></div>
     </div>
 
-    <!-- Barre de progression -->
-    <div id="progress-container" class="fixed top-0 left-0 w-full h-1.5 flex z-50"></div>
+    <!-- Progress -->
+    <div id="progress-bar" class="fixed top-0 left-0 w-full h-2 flex z-50"></div>
 
-    <!-- Conteneur de Slides -->
-    <main id="main-container" class="container mx-auto px-6 h-full relative z-10"></main>
+    <!-- Main Content -->
+    <main id="main-content" class="container mx-auto px-6 h-full relative z-10"></main>
 
-    <!-- Navigation -->
-    <nav class="fixed bottom-8 left-0 w-full px-10 flex justify-between items-center z-50">
-        <div id="counter" class="hidden md:block font-mono text-xl font-bold text-slate-500"></div>
+    <!-- Nav -->
+    <nav class="fixed bottom-6 left-0 w-full px-10 flex justify-between items-center z-50">
+        <div id="counter" class="font-mono text-xl font-bold text-slate-500"></div>
         <div class="flex gap-4">
-            <button onclick="prevSlide()" class="btn-nav p-4 rounded-2xl glass-panel border-white/20">
+            <button onclick="prevSlide()" class="p-4 rounded-2xl glass-panel border-white/20 hover:scale-110 transition-transform">
                 <i data-lucide="chevron-left"></i>
             </button>
-            <button onclick="nextSlide()" class="btn-nav p-4 rounded-2xl glass-panel border-cyan-500/50 text-cyan-400">
+            <button onclick="nextSlide()" class="p-4 rounded-2xl glass-panel border-cyan-500/50 text-cyan-400 hover:scale-110 transition-transform">
                 <i data-lucide="chevron-right"></i>
             </button>
         </div>
-        <div class="hidden md:block text-slate-600 text-xs font-bold tracking-widest uppercase">Espace = Suivant</div>
+        <div class="hidden md:block text-slate-600 text-xs font-bold uppercase tracking-widest">Espace / Flèches</div>
     </nav>
 
     <script>
         let currentIdx = 0;
-        let quizScore = 0;
+        let score = 0;
         let quizStep = 0;
 
         const slides = [
-            // 1. Accueil
-            `
-            <div class="text-center">
+            // 1
+            `<div class="text-center">
                 <div class="inline-block mb-6 px-4 py-1 rounded-full border border-cyan-500 bg-cyan-500/10 text-cyan-400 font-bold uppercase tracking-widest text-sm animate-pulse">Prospective 2026-2030</div>
-                <h1 class="text-6xl md:text-8xl font-black font-heading leading-tight mb-6">BTS SIO <br><span class="text-transparent bg-clip-text cyber-gradient">NEW GEN</span></h1>
-                <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto mb-10">Devenez l'architecte du monde numérique de demain. Entre Cybersécurité et Intelligence Artificielle.</p>
-                <button onclick="nextSlide()" class="px-8 py-4 cyber-gradient text-slate-950 font-black rounded-full hover:scale-110 transition-transform">DÉCOUVRIR LE FUTUR</button>
-            </div>
-            `,
-            // 2. BTS SIO 90s
-            `
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <h1 class="text-6xl md:text-8xl font-black font-heading leading-tight mb-6 uppercase">BTS SIO <br><span class="text-transparent bg-clip-text cyber-gradient">NEW GEN</span></h1>
+                <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto mb-10 italic">L'IA ne va pas vous remplacer. C'est l'humain qui utilise l'IA qui le fera.</p>
+                <button onclick="nextSlide()" class="px-10 py-5 cyber-gradient text-slate-950 font-black rounded-full hover:scale-110 transition-transform shadow-2xl">DÉCOUVRIR LE FUTUR</button>
+            </div>`,
+            // 2
+            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-4xl font-bold font-heading mb-8 border-l-4 border-cyan-500 pl-6 text-white uppercase">Le BTS SIO en 90s</h2>
+                    <h2 class="text-4xl font-bold font-heading mb-8 border-l-4 border-cyan-500 pl-6 uppercase">Le BTS SIO en 90s</h2>
                     <div class="space-y-4">
-                        <div class="glass-panel p-6 rounded-2xl flex items-center gap-6">
-                            <i data-lucide="zap" class="text-yellow-400 w-8 h-8"></i>
-                            <p class="text-lg"><span class="font-bold text-white">Alternance :</span> Apprenez en entreprise, soyez payés pour vos études.</p>
-                        </div>
-                        <div class="glass-panel p-6 rounded-2xl flex items-center gap-6">
-                            <i data-lucide="trending-up" class="text-green-400 w-8 h-8"></i>
-                            <p class="text-lg"><span class="font-bold text-white">Salaire :</span> Junior entre 32k€ et 40k€ dès la sortie.</p>
-                        </div>
-                        <div class="glass-panel p-6 rounded-2xl flex items-center gap-6">
-                            <i data-lucide="rocket" class="text-cyan-400 w-8 h-8"></i>
-                            <p class="text-lg"><span class="font-bold text-white">Évolution :</span> Chef de projet, Expert Cyber ou Lead Dev.</p>
-                        </div>
+                        <div class="glass-panel p-6 rounded-2xl flex items-center gap-6"><i data-lucide="zap" class="text-yellow-400 w-8 h-8"></i><p class="text-lg"><span class="font-bold text-white">Alternance :</span> Gagnez votre vie en apprenant.</p></div>
+                        <div class="glass-panel p-6 rounded-2xl flex items-center gap-6"><i data-lucide="trending-up" class="text-green-400 w-8 h-8"></i><p class="text-lg"><span class="font-bold text-white">Salaire :</span> 35k€ - 42k€ junior en 2027.</p></div>
+                        <div class="glass-panel p-6 rounded-2xl flex items-center gap-6"><i data-lucide="rocket" class="text-cyan-400 w-8 h-8"></i><p class="text-lg"><span class="font-bold text-white">Insertion :</span> Embauche garantie avant la fin du diplôme.</p></div>
                     </div>
                 </div>
-                <div class="hidden lg:block bg-slate-900 rounded-3xl h-96 border border-white/10 overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60">
-                </div>
-            </div>
-            `,
-            // 3. Comparatif
-            `
-            <div class="text-center">
-                <h2 class="text-4xl font-bold font-heading mb-12 uppercase">SISR ou SLAM ?</h2>
+                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" class="rounded-3xl border border-white/10 opacity-60">
+            </div>`,
+            // 3 SISR vs SLAM
+            `<div class="text-center">
+                <h2 class="text-4xl font-bold font-heading mb-12 uppercase">Deux parcours, une révolution</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div class="glass-panel p-10 rounded-3xl border-cyan-500/30 group hover:border-cyan-500 transition-colors">
                         <i data-lucide="shield" class="w-16 h-16 text-cyan-400 mx-auto mb-6"></i>
                         <h3 class="text-3xl font-black mb-4">SISR</h3>
-                        <p class="text-slate-400">Infrastructures, Cloud, Réseaux et Cybersécurité. Celui qui tient les murs.</p>
+                        <p class="text-slate-400">Le Gardien. Cloud, Réseaux et Cybersécurité.</p>
                     </div>
                     <div class="glass-panel p-10 rounded-3xl border-green-500/30 group hover:border-green-500 transition-colors">
                         <i data-lucide="code" class="w-16 h-16 text-green-400 mx-auto mb-6"></i>
                         <h3 class="text-3xl font-black mb-4">SLAM</h3>
-                        <p class="text-slate-400">Développement, Intelligence Artificielle et UX. Celui qui crée les outils.</p>
+                        <p class="text-slate-400">Le Créateur. Développement, IA et UX Design.</p>
                     </div>
                 </div>
-            </div>
-            `,
-            // 4. Pendu (Hangman)
+            </div>`,
+            // 4 IA
+            `<div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-5xl font-bold font-heading mb-8 italic">IA : Menace ou Exosquelette ?</h2>
+                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800" class="w-full h-64 object-cover rounded-3xl mb-8 border border-white/20">
+                <div class="p-6 rounded-2xl bg-cyan-500/5 border border-dashed border-cyan-500/40">
+                    <p class="text-xl font-bold text-cyan-300">"L'IA ne remplacera pas l'informaticien. L'informaticien qui utilise l'IA remplacera celui qui ne l'utilise pas."</p>
+                </div>
+            </div>`,
+            // 5 Code assisté
+            `<div class="flex flex-col items-center">
+                <h2 class="text-4xl font-bold font-heading mb-8 uppercase">2026 : Le code "assisté"</h2>
+                <div class="glass-panel p-8 rounded-2xl w-full max-w-2xl font-mono text-cyan-400 border-cyan-500/20">
+                    <div class="flex gap-2 mb-4"><div class="w-3 h-3 rounded-full bg-red-500"></div><div class="w-3 h-3 rounded-full bg-yellow-500"></div><div class="w-3 h-3 rounded-full bg-green-500"></div></div>
+                    <p>// Prompt: Créer une API sécurisée...</p>
+                    <p class="animate-pulse text-white">_ [L'IA génère 80% du code répétitif]</p>
+                    <p class="mt-4 text-slate-500">// Votre rôle : Architecture et Sécurité.</p>
+                </div>
+            </div>`,
+            // 6 Prompt Engineering
+            `<div class="text-center">
+                <i data-lucide="sparkles" class="w-20 h-20 text-cyan-400 mx-auto mb-8"></i>
+                <h2 class="text-4xl font-bold font-heading mb-6">Le "Prompting" : La nouvelle langue</h2>
+                <p class="text-xl text-slate-400 max-w-2xl mx-auto">Savoir parler aux machines devient une compétence fondamentale en SIO. Décomposer un problème complexe en instructions logiques.</p>
+            </div>`,
+            // 7 AIOps
+            `<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-4xl font-bold font-heading uppercase text-cyan-400">AIOps (SISR)</h2>
+                    <p class="text-xl">En 2028, les réseaux se réparent seuls grâce à l'IA.</p>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="text-green-500"></i> Détection d'intrusion instantanée</li>
+                        <li class="flex items-center gap-2"><i data-lucide="check-circle" class="text-green-500"></i> Maintenance prédictive</li>
+                    </ul>
+                </div>
+                <div class="bg-slate-900 h-64 rounded-3xl border border-cyan-500/30 flex items-center justify-center">
+                    <i data-lucide="cpu" class="w-32 h-32 text-cyan-900 animate-pulse"></i>
+                </div>
+            </div>`,
+            // 8 Pourquoi coder ?
+            `<div class="text-center">
+                <h2 class="text-4xl font-bold font-heading mb-10">Pourquoi apprendre à coder alors ?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="glass-panel p-6 rounded-2xl border-white/10"><h4 class="font-bold text-cyan-400 mb-2">Comprendre</h4><p class="text-sm">Pour débugger ce que l'IA ne saisit pas.</p></div>
+                    <div class="glass-panel p-6 rounded-2xl border-white/10"><h4 class="font-bold text-cyan-400 mb-2">Innover</h4><p class="text-sm">Pour créer l'IA de demain.</p></div>
+                    <div class="glass-panel p-6 rounded-2xl border-white/10"><h4 class="font-bold text-cyan-400 mb-2">Optimiser</h4><p class="text-sm">Pour réduire l'empreinte carbone.</p></div>
+                </div>
+            </div>`,
+            // 9 Dark IA
+            `<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="p-8 border-2 border-red-500/20 bg-red-500/5 rounded-3xl">
+                    <h2 class="text-4xl font-bold text-red-500 mb-4 uppercase">Dark IA</h2>
+                    <p class="text-lg">Phishing indétectable, Deepfakes, virus auto-adaptatifs... La menace est partout.</p>
+                </div>
+                <div class="text-center"><i data-lucide="shield-alert" class="w-40 h-40 text-red-900 mx-auto"></i><p class="mt-4 text-red-400 font-bold uppercase">Le SISR est le rempart.</p></div>
+            </div>`,
+            // 10 Souveraineté
+            `<div class="text-center">
+                <h2 class="text-4xl font-bold font-heading mb-8">Souveraineté Numérique</h2>
+                <div class="flex justify-center gap-4 mb-8">
+                    <span class="px-6 py-2 bg-white/5 rounded-full border border-white/20 font-bold italic">Mistral AI 🇫🇷</span>
+                    <span class="px-6 py-2 bg-white/5 rounded-full border border-white/20 font-bold italic">Kyutai 🇪🇺</span>
+                </div>
+                <p class="text-xl text-slate-400">Le BTS SIO forme ceux qui construiront l'indépendance technologique de l'Europe.</p>
+            </div>`,
+            // 11 Créativité
+            `<div class="grid grid-cols-2 gap-8">
+                <div class="p-8 glass-panel rounded-3xl"><h3 class="text-cyan-400 font-black text-2xl mb-4 uppercase">IA</h3><p class="text-slate-500">Vitesse, Synthèse, Calcul.</p></div>
+                <div class="p-8 glass-panel rounded-3xl border-white/40"><h3 class="text-white font-black text-2xl mb-4 uppercase">VOUS</h3><p class="text-white">Éthique, Créativité, Empathie.</p></div>
+            </div>`,
+            // 12 JEU PENDU (Injecté via JS)
             `<div id="hangman-hook"></div>`,
-            // 5. Quiz
-            `<div id="quiz-hook"></div>`,
-            // 6. Conclusion
-            `
-            <div class="text-center">
-                <h2 class="text-6xl font-black font-heading mb-10 leading-tight italic">C'EST VOTRE <br><span class="text-cyan-400">MOMENT.</span></h2>
-                <div class="glass-panel p-10 rounded-[3rem] border-white/20 inline-flex flex-col md:flex-row items-center gap-10 shadow-2xl">
-                    <div class="bg-white p-4 rounded-3xl shadow-lg">
-                        <i data-lucide="qr-code" class="w-40 h-40 text-slate-900"></i>
-                    </div>
-                    <div class="text-left max-w-xs">
-                        <p class="text-xl font-bold text-slate-300 mb-6 italic">"Le futur n'est pas ce qui va arriver, mais ce que nous allons faire."</p>
-                        <button onclick="window.open('https://parcoursup.fr')" class="w-full py-4 cyber-gradient rounded-2xl text-slate-950 font-black text-xl hover:scale-105 transition-all">POSTULER SIO</button>
-                    </div>
+            // 13 Apprendre
+            `<div class="text-center">
+                <h2 class="text-4xl font-bold font-heading mb-10">Apprendre à "Désapprendre"</h2>
+                <div class="flex justify-between items-center max-w-2xl mx-auto opacity-50">
+                    <div class="flex flex-col items-center"><div class="w-4 h-4 rounded-full bg-cyan-500 mb-2"></div><span class="text-xs">Python</span></div>
+                    <div class="flex-1 h-px bg-slate-700"></div>
+                    <div class="flex flex-col items-center"><div class="w-4 h-4 rounded-full bg-green-500 mb-2"></div><span class="text-xs">Prompting</span></div>
+                    <div class="flex-1 h-px bg-slate-700"></div>
+                    <div class="flex flex-col items-center"><div class="w-4 h-4 rounded-full bg-yellow-500 mb-2"></div><span class="text-xs">Quantique ?</span></div>
                 </div>
-            </div>
-            `
+                <p class="mt-12 text-xl italic text-slate-400">En SIO, on n'apprend pas un métier, on apprend à évoluer.</p>
+            </div>`,
+            // 14 Cockpit
+            `<div class="text-center">
+                <h2 class="text-5xl font-black font-heading mb-6">Le BTS SIO est votre Cockpit.</h2>
+                <p class="text-xl text-slate-500">Ne soyez pas le passager de l'IA. Soyez le pilote.</p>
+            </div>`,
+            // 15 Mission SISR
+            `<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="p-8 bg-cyan-500/5 border border-cyan-500/20 rounded-3xl"><h3 class="text-3xl font-bold text-cyan-400 mb-4">Mission SISR</h3><p>Installer une IA de surveillance réseau dans un hôpital.</p></div>
+                <div class="p-8 bg-slate-900 rounded-3xl font-mono text-sm text-slate-500"><p>> sudo apt install ai-guardian</p><p>> checking security...</p><p class="text-green-400">> ALL SYSTEMS SECURE</p></div>
+            </div>`,
+            // 16 Mission SLAM
+            `<div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                <div class="p-8 bg-green-500/5 border border-green-500/20 rounded-3xl"><h3 class="text-3xl font-bold text-green-400 mb-4">Mission SLAM</h3><p>Développer une application mobile qui détecte les maladies via photo.</p></div>
+                <div class="p-8 bg-slate-900 rounded-3xl font-mono text-sm text-slate-500"><p>import torch</p><p>model.predict(image)</p><p class="text-green-400">Diagnosis: Healthy (99%)</p></div>
+            </div>`,
+            // 17 Chiffres
+            `<div class="grid grid-cols-3 gap-6 text-center">
+                <div class="glass-panel p-6 rounded-3xl border-cyan-500"><h4 class="text-3xl font-black">38k€</h4><p class="text-xs">Salaire Junior</p></div>
+                <div class="glass-panel p-6 rounded-3xl border-green-500"><h4 class="text-3xl font-black">98%</h4><p class="text-xs">Insertion</p></div>
+                <div class="glass-panel p-6 rounded-3xl border-yellow-500"><h4 class="text-3xl font-black">+200k</h4><p class="text-xs">Offres d'emploi</p></div>
+            </div>`,
+            // 18 Passerelles
+            `<div class="text-center">
+                <h2 class="text-4xl font-bold font-heading mb-8">Et après le BTS ?</h2>
+                <div class="flex justify-center gap-12 font-bold text-xl uppercase tracking-widest text-cyan-400">
+                    <span>L3 Pro</span>
+                    <i data-lucide="arrow-right" class="text-slate-700"></i>
+                    <span>Master</span>
+                    <i data-lucide="arrow-right" class="text-slate-700"></i>
+                    <span>Expert</span>
+                </div>
+            </div>`,
+            // 19 JEU QUIZ
+            `<div id="quiz-hook"></div>`,
+            // 20 Conclusion
+            `<div class="text-center">
+                <h2 class="text-6xl font-black font-heading mb-8">VOTRE AVENTURE <span class="text-cyan-400 italic">SIO</span> COMMENCE</h2>
+                <div class="glass-panel p-10 rounded-[3rem] border-white/20 inline-flex flex-col md:flex-row items-center gap-10 shadow-2xl">
+                    <div class="bg-white p-4 rounded-3xl shadow-lg"><i data-lucide="qr-code" class="w-32 h-32 text-slate-900"></i></div>
+                    <div class="text-left"><p class="text-xl font-bold text-slate-300 mb-6 italic">"Prêts à coder le monde de demain ?"</p><button onclick="window.open('https://parcoursup.fr')" class="px-8 py-4 cyber-gradient rounded-2xl text-slate-950 font-black text-xl hover:scale-105 transition-all">POSTULER SIO</button></div>
+                </div>
+            </div>`
         ];
 
         function renderProgress() {
-            const container = document.getElementById('progress-container');
+            const container = document.getElementById('progress-bar');
             container.innerHTML = '';
             slides.forEach((_, i) => {
                 const step = document.createElement('div');
-                step.className = `flex-1 h-full transition-all duration-500 ${i <= currentIdx ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,1)]' : 'bg-white/10'}`;
+                step.className = `flex-1 h-full transition-all duration-500 ${i <= currentIdx ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,1)]' : 'bg-white/5'}`;
                 container.appendChild(step);
             });
         }
 
         function updateSlide() {
-            const container = document.getElementById('main-container');
+            const container = document.getElementById('main-content');
             container.innerHTML = `<div class="slide active">${slides[currentIdx]}</div>`;
-            
-            document.getElementById('counter').innerText = `${String(currentIdx + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
-            
-            // Logique spéciale pour les jeux
-            if (currentIdx === 3) initHangman();
-            if (currentIdx === 4) initQuiz();
-
+            document.getElementById('counter').innerText = `${String(currentIdx + 1).padStart(2, '0')} / ${slides.length}`;
+            if (currentIdx === 11) initHangman();
+            if (currentIdx === 18) initQuiz();
             renderProgress();
             lucide.createIcons();
         }
@@ -191,83 +252,44 @@
         function nextSlide() { if(currentIdx < slides.length - 1) { currentIdx++; updateSlide(); } }
         function prevSlide() { if(currentIdx > 0) { currentIdx--; updateSlide(); } }
 
-        // --- JEU DU PENDU ---
         function initHangman() {
             const word = "ADAPTATION";
-            let guesses = [];
             const hook = document.getElementById('hangman-hook');
-            hook.innerHTML = `
-                <div class="text-center">
-                    <h2 class="text-4xl font-bold mb-4 uppercase">Compétence clé en 2030 ?</h2>
-                    <p class="text-slate-500 mb-10">Devinez le mot secret (votre capacité à évoluer)</p>
-                    <div id="h-word" class="flex justify-center gap-4 mb-12"></div>
-                    <div id="h-kb" class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto"></div>
-                </div>
-            `;
+            hook.innerHTML = `<div class="text-center"><h2 class="text-3xl font-bold mb-4 uppercase">Compétence n°1 en 2030 ?</h2><div id="h-word" class="flex justify-center gap-3 mb-12"></div><div id="h-kb" class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto"></div></div>`;
             const wordDiv = document.getElementById('h-word');
-            word.split('').forEach(l => wordDiv.innerHTML += `<div class="w-10 h-14 border-b-4 border-slate-700 text-4xl font-black flex items-center justify-center text-transparent" data-l="${l}">_</div>`);
-
+            word.split('').forEach(l => wordDiv.innerHTML += `<div class="w-8 h-12 border-b-2 border-slate-700 text-3xl font-black flex items-center justify-center text-transparent" data-l="${l}">_</div>`);
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').forEach(l => {
                 const b = document.createElement('button');
-                b.className = "hangman-btn w-12 h-12 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/20 transition-all";
+                b.className = "hangman-btn w-10 h-10 bg-white/5 border border-white/10 rounded-lg font-bold hover:bg-white/20 transition-all";
                 b.innerText = l;
                 b.onclick = () => {
                     b.disabled = true;
-                    if(word.includes(l)) {
-                        document.querySelectorAll(`[data-l="${l}"]`).forEach(el => {
-                            el.innerText = l;
-                            el.className = "w-10 h-14 border-b-4 border-cyan-500 text-4xl font-black flex items-center justify-center text-white";
-                        });
-                    }
+                    if(word.includes(l)) document.querySelectorAll(`[data-l="${l}"]`).forEach(el => { el.innerText = l; el.className = "w-8 h-12 border-b-2 border-cyan-500 text-3xl font-black flex items-center justify-center text-white"; });
                 };
                 document.getElementById('h-kb').appendChild(b);
             });
         }
 
-        // --- QUIZ INTERACTIF ---
         const questions = [
-            { q: "Ton super-pouvoir informatique ?", a: ["Bâtir des univers (SLAM)", "Protéger les données (SISR)"], s: [1, -1] },
-            { q: "Face à une IA, tu préfères...", a: ["L'entraîner (SLAM)", "La sécuriser (SISR)"], s: [1, -1] },
-            { q: "Ton environnement de travail ?", a: ["Un éditeur de code (SLAM)", "Un terminal Linux (SISR)"], s: [1, -1] },
-            { q: "Ce qui te fascine ?", a: ["Le Web et l'IA (SLAM)", "Le Cloud et la Cyber (SISR)"], s: [1, -1] },
-            { q: "Dans une équipe ?", a: ["Le Créateur (SLAM)", "Le Gardien (SISR)"], s: [1, -1] },
-            { q: "Projet idéal ?", a: ["Une App mobile (SLAM)", "Un Réseau Ultra-Sûr (SISR)"], s: [1, -1] },
-            { q: "Ton outil préféré ?", a: ["React/Python (SLAM)", "Docker/Wireshark (SISR)"], s: [1, -1] }
+            { q: "Ton super-pouvoir ?", a: ["Créer (SLAM)", "Protéger (SISR)"], s: [1, -1] },
+            { q: "Ton outil ?", a: ["Code (SLAM)", "Terminal (SISR)"], s: [1, -1] },
+            { q: "Ton rêve ?", a: ["App Mobile (SLAM)", "Cyber-Défense (SISR)"], s: [1, -1] }
         ];
 
         function initQuiz() {
             const hook = document.getElementById('quiz-hook');
             if(quizStep >= questions.length) {
-                const res = quizScore > 0 ? "SLAM 🚀" : "SISR 🛡️";
-                hook.innerHTML = `<div class="text-center animate-bounce"><h2 class="text-2xl text-cyan-400 mb-2 font-mono">Verdict :</h2><h3 class="text-6xl font-black">DESTINATION ${res}</h3></div>`;
+                const res = score > 0 ? "SLAM 🚀" : "SISR 🛡️";
+                hook.innerHTML = `<div class="text-center animate-bounce"><h2 class="text-xl text-cyan-400 mb-2 font-mono uppercase">Verdict :</h2><h3 class="text-5xl font-black uppercase">DESTINATION ${res}</h3></div>`;
                 return;
             }
             const q = questions[quizStep];
-            hook.innerHTML = `
-                <div class="max-w-2xl mx-auto text-center">
-                    <span class="text-cyan-400 font-mono text-sm mb-4 block uppercase tracking-tighter">Question ${quizStep + 1} / 7</span>
-                    <h2 class="text-4xl font-bold mb-10">${q.q}</h2>
-                    <div class="grid gap-4">
-                        <button onclick="handleQuiz(0)" class="p-6 glass-panel rounded-2xl text-xl hover:border-cyan-500 transition-all font-bold">${q.a[0]}</button>
-                        <button onclick="handleQuiz(1)" class="p-6 glass-panel rounded-2xl text-xl hover:border-green-500 transition-all font-bold">${q.a[1]}</button>
-                    </div>
-                </div>
-            `;
+            hook.innerHTML = `<div class="max-w-2xl mx-auto text-center"><h2 class="text-3xl font-bold mb-10 uppercase">${q.q}</h2><div class="grid gap-4"><button onclick="handleQuiz(0)" class="quiz-option p-6 glass-panel rounded-2xl text-xl transition-all font-bold border-white/10">${q.a[0]}</button><button onclick="handleQuiz(1)" class="quiz-option p-6 glass-panel rounded-2xl text-xl transition-all font-bold border-white/10">${q.a[1]}</button></div></div>`;
         }
 
-        window.handleQuiz = (idx) => {
-            quizScore += questions[quizStep].s[idx];
-            quizStep++;
-            initQuiz();
-        };
+        window.handleQuiz = (idx) => { score += questions[quizStep].s[idx]; quizStep++; initQuiz(); };
 
-        // Events
-        window.addEventListener('keydown', (e) => {
-            if(e.key === 'ArrowRight' || e.key === ' ') nextSlide();
-            if(e.key === 'ArrowLeft') prevSlide();
-        });
-
-        // Init App
+        window.addEventListener('keydown', (e) => { if(e.key === 'ArrowRight' || e.key === ' ') nextSlide(); if(e.key === 'ArrowLeft') prevSlide(); });
         updateSlide();
     </script>
 </body>
