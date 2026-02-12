@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTS SIO 2030 - Prospective</title>
+    <!-- Bibliothèques ultra-légères via CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,6 +17,7 @@
             background-color: #020617;
             color: #f8fafc;
             overflow: hidden;
+            height: 100vh;
         }
         .font-heading { font-family: 'Space Grotesk', sans-serif; }
         .cyber-gradient { background: linear-gradient(135deg, #06b6d4 0%, #22c55e 100%); }
@@ -27,17 +29,21 @@
         .slide {
             display: none;
             height: 100%;
-            animation: fadeIn 0.5s ease-out forwards;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideIn 0.5s ease-out forwards;
         }
         .slide.active { display: flex; }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .progress-segment {
-            transition: all 0.5s ease-in-out;
+        .btn-nav {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .hangman-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .btn-nav:hover { transform: scale(1.1); }
+        .btn-nav:active { transform: scale(0.95); }
+        .hangman-btn:disabled { opacity: 0.2; cursor: not-allowed; }
     </style>
 <script type="importmap">
 {
@@ -50,232 +56,218 @@
 }
 </script>
 </head>
-<body class="h-screen w-full bg-slate-950 selection:bg-cyan-500 selection:text-white">
+<body class="bg-slate-950 text-slate-100">
     
-    <!-- Background Decor -->
+    <!-- Background Animé -->
     <div class="fixed inset-0 pointer-events-none z-0">
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(15,23,42,1)_0%,rgba(2,6,23,1)_100%)]"></div>
-        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-900/10 rounded-full blur-[150px] animate-pulse"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-green-900/10 rounded-full blur-[150px] animate-pulse" style="animation-delay: 2s"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-900/10 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-green-900/10 rounded-full blur-[120px] animate-pulse"></div>
     </div>
 
-    <!-- Progress Bar -->
-    <div id="progress-bar" class="fixed top-0 left-0 w-full h-2 z-50 flex"></div>
+    <!-- Barre de progression -->
+    <div id="progress-container" class="fixed top-0 left-0 w-full h-1.5 flex z-50"></div>
 
-    <!-- Main Content -->
-    <main id="slides-container" class="h-full container mx-auto px-6 relative z-10 flex flex-col justify-center"></main>
+    <!-- Conteneur de Slides -->
+    <main id="main-container" class="container mx-auto px-6 h-full relative z-10"></main>
 
     <!-- Navigation -->
-    <nav class="fixed bottom-6 left-0 w-full px-8 flex justify-between items-center z-50">
-        <div id="slide-counter" class="hidden md:block text-slate-500 font-mono text-xl font-bold"></div>
+    <nav class="fixed bottom-8 left-0 w-full px-10 flex justify-between items-center z-50">
+        <div id="counter" class="hidden md:block font-mono text-xl font-bold text-slate-500"></div>
         <div class="flex gap-4">
-            <button onclick="prevSlide()" class="p-4 rounded-2xl glass-panel hover:bg-white/10 border border-white/20 transition-all">
-                <i data-lucide="chevron-left" class="w-7 h-7"></i>
+            <button onclick="prevSlide()" class="btn-nav p-4 rounded-2xl glass-panel border-white/20">
+                <i data-lucide="chevron-left"></i>
             </button>
-            <button onclick="nextSlide()" class="p-4 rounded-2xl glass-panel hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/50 transition-all">
-                <i data-lucide="chevron-right" class="w-7 h-7"></i>
+            <button onclick="nextSlide()" class="btn-nav p-4 rounded-2xl glass-panel border-cyan-500/50 text-cyan-400">
+                <i data-lucide="chevron-right"></i>
             </button>
         </div>
-        <div class="hidden md:flex items-center gap-3 text-slate-500 text-xs font-black uppercase tracking-widest">
-            <kbd class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300">ESPACE</kbd>
-            <span>SUIVANT</span>
-        </div>
+        <div class="hidden md:block text-slate-600 text-xs font-bold tracking-widest uppercase">Espace = Suivant</div>
     </nav>
 
     <script>
-        let currentSlideIdx = 0;
-        const totalSlides = 20;
+        let currentIdx = 0;
+        let quizScore = 0;
+        let quizStep = 0;
 
-        // Configuration des slides (Contenu HTML)
-        const slidesHTML = [
-            // 1. Home
-            `<div class="flex flex-col items-center text-center">
-                <div class="mb-6 px-6 py-2 rounded-full border-2 border-cyan-500 bg-cyan-500/20 text-cyan-300 text-lg font-bold tracking-widest uppercase animate-pulse inline-block">Prospective BTS SIO 2026-2030</div>
-                <h1 class="text-6xl md:text-8xl font-bold font-heading mb-6 leading-tight uppercase">L'ÈRE DE L'IA <br><span class="text-transparent bg-clip-text cyber-gradient">HYBRIDE</span></h1>
-                <p class="text-2xl text-slate-300 max-w-3xl mb-12 font-medium">Ne subissez pas le futur de l'informatique, devenez celui qui le programme et le sécurise.</p>
-                <button onclick="nextSlide()" class="px-10 py-5 cyber-gradient rounded-full text-slate-950 text-xl font-black hover:scale-110 transition-transform shadow-lg">DÉCOLLAGE IMMÉDIAT</button>
-            </div>`,
-            
+        const slides = [
+            // 1. Accueil
+            `
+            <div class="text-center">
+                <div class="inline-block mb-6 px-4 py-1 rounded-full border border-cyan-500 bg-cyan-500/10 text-cyan-400 font-bold uppercase tracking-widest text-sm animate-pulse">Prospective 2026-2030</div>
+                <h1 class="text-6xl md:text-8xl font-black font-heading leading-tight mb-6">BTS SIO <br><span class="text-transparent bg-clip-text cyber-gradient">NEW GEN</span></h1>
+                <p class="text-xl md:text-2xl text-slate-400 max-w-2xl mx-auto mb-10">Devenez l'architecte du monde numérique de demain. Entre Cybersécurité et Intelligence Artificielle.</p>
+                <button onclick="nextSlide()" class="px-8 py-4 cyber-gradient text-slate-950 font-black rounded-full hover:scale-110 transition-transform">DÉCOUVRIR LE FUTUR</button>
+            </div>
+            `,
             // 2. BTS SIO 90s
-            `<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            `
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                 <div>
-                    <h2 class="text-4xl md:text-5xl font-bold font-heading mb-8 border-l-8 border-cyan-500 pl-6">BTS SIO : Le socle ⚡</h2>
+                    <h2 class="text-4xl font-bold font-heading mb-8 border-l-4 border-cyan-500 pl-6 text-white uppercase">Le BTS SIO en 90s</h2>
                     <div class="space-y-4">
                         <div class="glass-panel p-6 rounded-2xl flex items-center gap-6">
-                            <i data-lucide="users" class="text-cyan-400 w-10 h-10"></i>
-                            <p class="text-xl">Insertion : <span class="font-bold text-white">100% en moins de 3 mois</span>.</p>
+                            <i data-lucide="zap" class="text-yellow-400 w-8 h-8"></i>
+                            <p class="text-lg"><span class="font-bold text-white">Alternance :</span> Apprenez en entreprise, soyez payés pour vos études.</p>
                         </div>
                         <div class="glass-panel p-6 rounded-2xl flex items-center gap-6">
-                            <i data-lucide="cpu" class="text-green-400 w-10 h-10"></i>
-                            <p class="text-xl">Technos : <span class="font-bold text-white">IA, Cloud, Cyber, Python, React</span>.</p>
+                            <i data-lucide="trending-up" class="text-green-400 w-8 h-8"></i>
+                            <p class="text-lg"><span class="font-bold text-white">Salaire :</span> Junior entre 32k€ et 40k€ dès la sortie.</p>
+                        </div>
+                        <div class="glass-panel p-6 rounded-2xl flex items-center gap-6">
+                            <i data-lucide="rocket" class="text-cyan-400 w-8 h-8"></i>
+                            <p class="text-lg"><span class="font-bold text-white">Évolution :</span> Chef de projet, Expert Cyber ou Lead Dev.</p>
                         </div>
                     </div>
                 </div>
-                <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=800" class="rounded-3xl border-2 border-white/10 hidden lg:block" />
-            </div>`,
-
-            // 3. SISR vs SLAM
-            `<div class="text-center">
-                <h2 class="text-4xl font-bold font-heading mb-10">Deux parcours, une même révolution</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                    <div class="glass-panel p-8 rounded-3xl border-cyan-500/30 text-left">
-                        <i data-lucide="shield-check" class="text-cyan-400 w-12 h-12 mb-4"></i>
-                        <h3 class="text-3xl font-bold text-cyan-400 mb-4">SISR</h3>
-                        <p class="text-slate-300 text-xl">L'expert qui assure que l'IA tourne sur des infrastructures <span class="text-white font-bold">invulnérables</span>.</p>
-                    </div>
-                    <div class="glass-panel p-8 rounded-3xl border-green-500/30 text-left">
-                        <i data-lucide="code-2" class="text-green-400 w-12 h-12 mb-4"></i>
-                        <h3 class="text-3xl font-bold text-green-400 mb-4">SLAM</h3>
-                        <p class="text-slate-300 text-xl">Le créateur qui injecte de l'intelligence dans chaque ligne de code.</p>
-                    </div>
+                <div class="hidden lg:block bg-slate-900 rounded-3xl h-96 border border-white/10 overflow-hidden shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" class="w-full h-full object-cover opacity-60">
                 </div>
-            </div>`,
-
-            // 4. IA : Menace
-            `<div class="text-center max-w-4xl mx-auto">
-                <h2 class="text-5xl font-bold font-heading mb-8">IA : Menace ou Exosquelette ?</h2>
-                <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000" class="w-full h-64 object-cover rounded-3xl mb-8 border-2 border-white/10 shadow-2xl" />
-                <div class="p-6 rounded-2xl bg-cyan-500/5 border-2 border-dashed border-cyan-500/30">
-                    <p class="text-xl font-bold italic">L'IA ne remplacera pas l'informaticien. L'informaticien qui utilise l'IA remplacera celui qui ne l'utilise pas.</p>
-                </div>
-            </div>`,
-
-            // 12. HANGMAN (Sera injecté dynamiquement)
-            `<div id="hangman-container"></div>`,
-
-            // 19. QUIZ (Sera injecté dynamiquement)
-            `<div id="quiz-container"></div>`,
-
-            // 20. Conclusion
-            `<div class="text-center">
-                <h2 class="text-6xl font-black font-heading mb-8">VOTRE AVENTURE <span class="text-cyan-400">SIO</span> COMMENCE</h2>
-                <div class="glass-panel p-10 rounded-[3rem] border-white/20 inline-flex items-center gap-12 shadow-2xl">
-                    <div class="bg-white p-4 rounded-3xl"><i data-lucide="qr-code" class="text-slate-900 w-40 h-40"></i></div>
-                    <div class="text-left space-y-6 max-w-sm">
-                        <p class="text-2xl font-bold italic text-slate-300">"Prêts à coder le monde de demain ?"</p>
-                        <button onclick="window.open('https://parcoursup.fr')" class="w-full flex justify-between px-8 py-4 cyber-gradient rounded-2xl text-slate-900 font-black text-xl hover:scale-105 transition-transform">
-                            PARCOURSUP <i data-lucide="arrow-right"></i>
-                        </button>
+            </div>
+            `,
+            // 3. Comparatif
+            `
+            <div class="text-center">
+                <h2 class="text-4xl font-bold font-heading mb-12 uppercase">SISR ou SLAM ?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="glass-panel p-10 rounded-3xl border-cyan-500/30 group hover:border-cyan-500 transition-colors">
+                        <i data-lucide="shield" class="w-16 h-16 text-cyan-400 mx-auto mb-6"></i>
+                        <h3 class="text-3xl font-black mb-4">SISR</h3>
+                        <p class="text-slate-400">Infrastructures, Cloud, Réseaux et Cybersécurité. Celui qui tient les murs.</p>
+                    </div>
+                    <div class="glass-panel p-10 rounded-3xl border-green-500/30 group hover:border-green-500 transition-colors">
+                        <i data-lucide="code" class="w-16 h-16 text-green-400 mx-auto mb-6"></i>
+                        <h3 class="text-3xl font-black mb-4">SLAM</h3>
+                        <p class="text-slate-400">Développement, Intelligence Artificielle et UX. Celui qui crée les outils.</p>
                     </div>
                 </div>
-            </div>`
+            </div>
+            `,
+            // 4. Pendu (Hangman)
+            `<div id="hangman-hook"></div>`,
+            // 5. Quiz
+            `<div id="quiz-hook"></div>`,
+            // 6. Conclusion
+            `
+            <div class="text-center">
+                <h2 class="text-6xl font-black font-heading mb-10 leading-tight italic">C'EST VOTRE <br><span class="text-cyan-400">MOMENT.</span></h2>
+                <div class="glass-panel p-10 rounded-[3rem] border-white/20 inline-flex flex-col md:flex-row items-center gap-10 shadow-2xl">
+                    <div class="bg-white p-4 rounded-3xl shadow-lg">
+                        <i data-lucide="qr-code" class="w-40 h-40 text-slate-900"></i>
+                    </div>
+                    <div class="text-left max-w-xs">
+                        <p class="text-xl font-bold text-slate-300 mb-6 italic">"Le futur n'est pas ce qui va arriver, mais ce que nous allons faire."</p>
+                        <button onclick="window.open('https://parcoursup.fr')" class="w-full py-4 cyber-gradient rounded-2xl text-slate-950 font-black text-xl hover:scale-105 transition-all">POSTULER SIO</button>
+                    </div>
+                </div>
+            </div>
+            `
         ];
 
-        // NOTE: Pour simplifier l'exemple, j'ai réduit les slides statiques ici. 
-        // En prod, vous mettriez les 20 blocs HTML.
-
         function renderProgress() {
-            const bar = document.getElementById('progress-bar');
-            bar.innerHTML = '';
-            for(let i=0; i<totalSlides; i++) {
-                const div = document.createElement('div');
-                div.className = `flex-1 h-full transition-all border-r border-black/20 ${i <= currentSlideIdx ? 'bg-cyan-500 shadow-lg' : 'bg-white/5'}`;
-                bar.appendChild(div);
-            }
+            const container = document.getElementById('progress-container');
+            container.innerHTML = '';
+            slides.forEach((_, i) => {
+                const step = document.createElement('div');
+                step.className = `flex-1 h-full transition-all duration-500 ${i <= currentIdx ? 'bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,1)]' : 'bg-white/10'}`;
+                container.appendChild(step);
+            });
         }
 
         function updateSlide() {
-            const container = document.getElementById('slides-container');
-            // Logique de rendu des slides spécifiques (Hangman, Quiz, etc.)
-            if (currentSlideIdx === 11) { // Index pour Hangman
-                renderHangman();
-            } else if (currentSlideIdx === 18) { // Index pour Quiz
-                renderQuiz();
-            } else {
-                container.innerHTML = `<div class="slide active flex-col items-center justify-center">${slidesHTML[Math.min(currentSlideIdx, slidesHTML.length -1)]}</div>`;
-            }
+            const container = document.getElementById('main-container');
+            container.innerHTML = `<div class="slide active">${slides[currentIdx]}</div>`;
             
-            document.getElementById('slide-counter').innerHTML = `<span class="text-cyan-400">${String(currentSlideIdx+1).padStart(2,'0')}</span> <span class="text-slate-700">/</span> ${totalSlides}`;
+            document.getElementById('counter').innerText = `${String(currentIdx + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+            
+            // Logique spéciale pour les jeux
+            if (currentIdx === 3) initHangman();
+            if (currentIdx === 4) initQuiz();
+
             renderProgress();
             lucide.createIcons();
         }
 
-        function nextSlide() { if(currentSlideIdx < totalSlides - 1) { currentSlideIdx++; updateSlide(); } }
-        function prevSlide() { if(currentSlideIdx > 0) { currentSlideIdx--; updateSlide(); } }
+        function nextSlide() { if(currentIdx < slides.length - 1) { currentIdx++; updateSlide(); } }
+        function prevSlide() { if(currentIdx > 0) { currentIdx--; updateSlide(); } }
 
-        // --- HANGMAN GAME ---
-        function renderHangman() {
+        // --- JEU DU PENDU ---
+        function initHangman() {
             const word = "ADAPTATION";
             let guesses = [];
-            const container = document.getElementById('slides-container');
-            container.innerHTML = `
-                <div class="flex flex-col items-center text-center">
-                    <h2 class="text-4xl font-bold mb-4">La compétence n°1 en 2030 ?</h2>
-                    <div id="hangman-display" class="flex gap-4 mb-12 flex-wrap justify-center"></div>
-                    <div id="hangman-kb" class="max-w-3xl flex flex-wrap gap-2 justify-center"></div>
-                    <div id="hangman-result" class="mt-8 hidden"></div>
+            const hook = document.getElementById('hangman-hook');
+            hook.innerHTML = `
+                <div class="text-center">
+                    <h2 class="text-4xl font-bold mb-4 uppercase">Compétence clé en 2030 ?</h2>
+                    <p class="text-slate-500 mb-10">Devinez le mot secret (votre capacité à évoluer)</p>
+                    <div id="h-word" class="flex justify-center gap-4 mb-12"></div>
+                    <div id="h-kb" class="flex flex-wrap justify-center gap-2 max-w-2xl mx-auto"></div>
                 </div>
             `;
-            
-            const display = document.getElementById('hangman-display');
-            word.split('').forEach(char => {
-                display.innerHTML += `<div class="w-12 h-16 border-b-4 flex items-center justify-center text-4xl font-black text-transparent border-slate-700" data-char="${char}">_</div>`;
-            });
+            const wordDiv = document.getElementById('h-word');
+            word.split('').forEach(l => wordDiv.innerHTML += `<div class="w-10 h-14 border-b-4 border-slate-700 text-4xl font-black flex items-center justify-center text-transparent" data-l="${l}">_</div>`);
 
-            const kb = document.getElementById('hangman-kb');
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('').forEach(l => {
-                const btn = document.createElement('button');
-                btn.className = "hangman-btn w-12 h-12 bg-white/5 border border-white/10 rounded-lg font-bold hover:bg-white/20";
-                btn.innerText = l;
-                btn.onclick = () => {
-                    btn.disabled = true;
+                const b = document.createElement('button');
+                b.className = "hangman-btn w-12 h-12 bg-white/5 border border-white/10 rounded-xl font-bold hover:bg-white/20 transition-all";
+                b.innerText = l;
+                b.onclick = () => {
+                    b.disabled = true;
                     if(word.includes(l)) {
-                        document.querySelectorAll(`[data-char="${l}"]`).forEach(el => {
+                        document.querySelectorAll(`[data-l="${l}"]`).forEach(el => {
                             el.innerText = l;
-                            el.className = "w-12 h-16 border-b-4 flex items-center justify-center text-4xl font-black text-white border-cyan-500";
+                            el.className = "w-10 h-14 border-b-4 border-cyan-500 text-4xl font-black flex items-center justify-center text-white";
                         });
-                        if([...document.querySelectorAll('[data-char]')].every(el => el.innerText !== '_')) {
-                            document.getElementById('hangman-result').innerHTML = "<div class='p-6 glass-panel border-cyan-500 text-cyan-400 rounded-3xl text-2xl font-bold'>GAGNÉ ! L'ADAPTATION est la clé du futur.</div>";
-                            document.getElementById('hangman-result').classList.remove('hidden');
-                        }
                     }
                 };
-                kb.appendChild(btn);
+                document.getElementById('h-kb').appendChild(b);
             });
         }
 
-        // --- QUIZ SYSTEM ---
-        function renderQuiz() {
-            const questions = [
-                { t: "Ton super-pouvoir informatique idéal ?", o: ["Bâtir des univers (SLAM)", "Rendre les systèmes invulnérables (SISR)"], s: [1, -1] },
-                { t: "Face à une IA puissante, tu préfères...", o: ["L'intégrer (SLAM)", "Surveiller les flux (SISR)"], s: [1, -1] },
-                { t: "Ton terminal rêvé ?", o: ["VS Code / Cursor (SLAM)", "Terminal Linux sombre (SISR)"], s: [1, -1] }
-            ];
-            let currentQ = 0;
-            let score = 0;
+        // --- QUIZ INTERACTIF ---
+        const questions = [
+            { q: "Ton super-pouvoir informatique ?", a: ["Bâtir des univers (SLAM)", "Protéger les données (SISR)"], s: [1, -1] },
+            { q: "Face à une IA, tu préfères...", a: ["L'entraîner (SLAM)", "La sécuriser (SISR)"], s: [1, -1] },
+            { q: "Ton environnement de travail ?", a: ["Un éditeur de code (SLAM)", "Un terminal Linux (SISR)"], s: [1, -1] },
+            { q: "Ce qui te fascine ?", a: ["Le Web et l'IA (SLAM)", "Le Cloud et la Cyber (SISR)"], s: [1, -1] },
+            { q: "Dans une équipe ?", a: ["Le Créateur (SLAM)", "Le Gardien (SISR)"], s: [1, -1] },
+            { q: "Projet idéal ?", a: ["Une App mobile (SLAM)", "Un Réseau Ultra-Sûr (SISR)"], s: [1, -1] },
+            { q: "Ton outil préféré ?", a: ["React/Python (SLAM)", "Docker/Wireshark (SISR)"], s: [1, -1] }
+        ];
 
-            const container = document.getElementById('slides-container');
-            
-            function showQ() {
-                const q = questions[currentQ];
-                container.innerHTML = `
-                    <div class="max-w-2xl mx-auto text-center">
-                        <span class="text-cyan-400 font-mono mb-4 block">Question ${currentQ + 1} / ${questions.length}</span>
-                        <h2 class="text-4xl font-bold mb-8">${q.t}</h2>
-                        <div class="grid gap-4">
-                            <button onclick="ans(0)" class="p-6 glass-panel rounded-2xl text-xl hover:border-cyan-500 transition-all">${q.o[0]}</button>
-                            <button onclick="ans(1)" class="p-6 glass-panel rounded-2xl text-xl hover:border-cyan-500 transition-all">${q.o[1]}</button>
-                        </div>
-                    </div>
-                `;
+        function initQuiz() {
+            const hook = document.getElementById('quiz-hook');
+            if(quizStep >= questions.length) {
+                const res = quizScore > 0 ? "SLAM 🚀" : "SISR 🛡️";
+                hook.innerHTML = `<div class="text-center animate-bounce"><h2 class="text-2xl text-cyan-400 mb-2 font-mono">Verdict :</h2><h3 class="text-6xl font-black">DESTINATION ${res}</h3></div>`;
+                return;
             }
-
-            window.ans = (idx) => {
-                score += questions[currentQ].s[idx];
-                if(++currentQ < questions.length) showQ();
-                else {
-                    const res = score > 0 ? "SLAM 🚀" : "SISR 🛡️";
-                    container.innerHTML = `<h2 class="text-5xl font-black text-center animate-bounce">DESTINATION : ${res}</h2>`;
-                }
-            };
-            showQ();
+            const q = questions[quizStep];
+            hook.innerHTML = `
+                <div class="max-w-2xl mx-auto text-center">
+                    <span class="text-cyan-400 font-mono text-sm mb-4 block uppercase tracking-tighter">Question ${quizStep + 1} / 7</span>
+                    <h2 class="text-4xl font-bold mb-10">${q.q}</h2>
+                    <div class="grid gap-4">
+                        <button onclick="handleQuiz(0)" class="p-6 glass-panel rounded-2xl text-xl hover:border-cyan-500 transition-all font-bold">${q.a[0]}</button>
+                        <button onclick="handleQuiz(1)" class="p-6 glass-panel rounded-2xl text-xl hover:border-green-500 transition-all font-bold">${q.a[1]}</button>
+                    </div>
+                </div>
+            `;
         }
 
-        // Init
-        window.addEventListener('keydown', e => {
+        window.handleQuiz = (idx) => {
+            quizScore += questions[quizStep].s[idx];
+            quizStep++;
+            initQuiz();
+        };
+
+        // Events
+        window.addEventListener('keydown', (e) => {
             if(e.key === 'ArrowRight' || e.key === ' ') nextSlide();
             if(e.key === 'ArrowLeft') prevSlide();
         });
+
+        // Init App
         updateSlide();
     </script>
 </body>
