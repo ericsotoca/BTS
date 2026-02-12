@@ -18,7 +18,14 @@ import {
   Zap,
   Sparkles,
   Search,
-  Users
+  Users,
+  Globe,
+  ShieldAlert,
+  Leaf,
+  Smartphone,
+  Gamepad,
+  HeartPulse,
+  Briefcase
 } from 'lucide-react';
 import { SlideWrapper } from './components/SlideWrapper';
 import { Quiz } from './components/Quiz';
@@ -27,7 +34,7 @@ import { Hangman } from './components/Hangman';
 const InteractiveSection: React.FC<{ question: string; answer: React.ReactNode }> = ({ question, answer }) => {
   const [show, setShow] = useState(false);
   return (
-    <div className="mt-8 p-6 rounded-2xl border-2 border-dashed border-cyan-500/30 bg-cyan-500/5 transition-all">
+    <div className="mt-8 p-6 rounded-3xl border-2 border-dashed border-cyan-500/30 bg-cyan-500/5 transition-all">
       <div className="flex items-center gap-4 mb-2">
         <HelpCircle className="text-cyan-400 animate-bounce flex-shrink-0" />
         <p className="text-xl font-bold text-white italic">{question}</p>
@@ -35,7 +42,7 @@ const InteractiveSection: React.FC<{ question: string; answer: React.ReactNode }
       {!show ? (
         <button 
           onClick={() => setShow(true)}
-          className="mt-2 flex items-center gap-2 px-4 py-2 bg-cyan-500 text-slate-900 rounded-lg font-bold hover:scale-105 transition-transform"
+          className="mt-2 flex items-center gap-2 px-6 py-3 bg-cyan-500 text-slate-900 rounded-xl font-black hover:scale-105 transition-transform"
         >
           <Eye size={18} /> Voir l'analyse interactive
         </button>
@@ -50,7 +57,7 @@ const InteractiveSection: React.FC<{ question: string; answer: React.ReactNode }
 
 const App: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 20; // Augmenté pour inclure le Hangman
+  const totalSlides = 25;
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => Math.min(prev + 1, totalSlides - 1));
@@ -72,371 +79,354 @@ const App: React.FC = () => {
   const slides = [
     // 1. Home
     <div key="s0" className="flex flex-col items-center justify-center text-center h-full relative">
-      <div className="absolute inset-0 z-0 opacity-40">
-        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072" className="w-full h-full object-cover" alt="Space Tech" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/80 to-transparent"></div>
-      </div>
       <div className="z-10 px-4">
-        <div className="mb-6 px-6 py-2 rounded-full border-2 border-cyan-500 bg-cyan-500/20 text-cyan-300 text-lg font-bold tracking-widest uppercase animate-pulse inline-block">
+        <div className="mb-8 px-8 py-3 rounded-full border border-cyan-500/30 bg-cyan-500/5 text-cyan-400 text-sm font-black tracking-[0.3em] uppercase animate-pulse inline-block">
           Prospective BTS SIO 2026-2030
         </div>
-        <h1 className="text-6xl md:text-8xl font-bold font-heading mb-6 leading-tight">
-          L'ÈRE DE L'IA <br /><span className="text-transparent bg-clip-text cyber-gradient">HYBRIDE</span>
+        <h1 className="text-7xl md:text-[9rem] font-black font-heading mb-10 leading-none tracking-tighter uppercase">
+          BTS SIO <br /><span className="text-transparent bg-clip-text cyber-gradient italic">NEW FRONTIER</span>
         </h1>
-        <p className="text-2xl text-slate-300 max-w-3xl mb-12 font-medium">
-          Ne subissez pas le futur de l'informatique, devenez celui qui le programme et le sécurise.
+        <p className="text-3xl text-slate-400 max-w-4xl mx-auto mb-16 font-light">
+          Le diplôme qui vous donne les clés du <span className="text-white font-bold">monde numérique</span>.
         </p>
-        <button onClick={nextSlide} className="px-10 py-5 cyber-gradient rounded-full text-slate-950 text-xl font-black hover:scale-110 transition-transform shadow-[0_0_30px_rgba(34,197,94,0.4)]">
-          DÉCOLLAGE IMMÉDIAT
+        <button onClick={nextSlide} className="px-16 py-8 cyber-gradient rounded-[2rem] text-slate-950 text-3xl font-black hover:scale-110 transition-transform shadow-2xl">
+          LANCER LA PRÉSENTATION
         </button>
       </div>
     </div>,
 
-    // 2. BTS SIO en 90s
-    <div key="s1" className="h-full flex flex-col justify-center">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <h2 className="text-4xl md:text-5xl font-bold font-heading mb-8 border-l-8 border-cyan-500 pl-6">
-            BTS SIO : Le socle ⚡
-          </h2>
-          <div className="space-y-4">
-             <div className="glass-panel p-6 rounded-2xl flex items-center gap-6">
-                <Users className="text-cyan-400" size={40} />
-                <p className="text-xl">Insertion : <span className="font-bold text-white">100% en moins de 3 mois</span>.</p>
-             </div>
-             <div className="glass-panel p-6 rounded-2xl flex items-center gap-6">
-                <Cpu className="text-green-400" size={40} />
-                <p className="text-xl">Technos : <span className="font-bold text-white">IA, Cloud, Cyber, Python, React</span>.</p>
-             </div>
-          </div>
-          <InteractiveSection 
-            question="Question : Pourquoi l'informatique est le seul secteur qui ne connaît pas la crise ?"
-            answer="Parce que chaque entreprise, de la boulangerie à la multinationale, est devenue une entreprise logicielle."
-          />
+    // 2. SISR Complet
+    <div key="s1" className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center h-full">
+      <div className="space-y-10">
+        <div className="bg-cyan-500/20 p-6 rounded-3xl w-fit"><ShieldCheck className="w-16 h-16 text-cyan-400" /></div>
+        <h2 className="text-6xl font-black font-heading uppercase leading-none">SISR</h2>
+        <h3 className="text-3xl text-cyan-400 font-bold uppercase tracking-tight">Solutions d'Infrastructure, Systèmes et Réseaux</h3>
+        <p className="text-2xl text-slate-400 leading-relaxed italic">"Le Cloud, la Cyber-sécurité et les Réseaux n'auront plus de secrets pour vous. Vous êtes le garant de la continuité du monde connecté."</p>
+      </div>
+      <div className="relative rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl h-[500px]">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" alt="Server" />
+      </div>
+    </div>,
+
+    // 3. SLAM Complet
+    <div key="s2" className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center h-full">
+      <div className="relative rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl h-[500px]">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800" className="w-full h-full object-cover" alt="Coding" />
+      </div>
+      <div className="space-y-10">
+        <div className="bg-emerald-500/20 p-6 rounded-3xl w-fit"><Code2 className="w-16 h-16 text-emerald-400" /></div>
+        <h2 className="text-6xl font-black font-heading uppercase leading-none">SLAM</h2>
+        <h3 className="text-3xl text-emerald-400 font-bold uppercase tracking-tight">Solutions Logicielles et Applications Métier</h3>
+        <p className="text-2xl text-slate-400 leading-relaxed italic">"Devenez un créateur de solutions. Du développement web à l'Intelligence Artificielle, vous codez le futur des entreprises."</p>
+      </div>
+    </div>,
+
+    // 4. Pourquoi SIO?
+    <div key="s3" className="text-center max-w-7xl mx-auto space-y-16">
+      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">Pourquoi choisir le SIO ?</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 text-left">
+        <div className="p-10 bg-white/5 backdrop-blur-xl rounded-[3rem] border border-cyan-500/20">
+          <h4 className="text-3xl font-black text-cyan-400 mb-6 tracking-tighter">ALTERNANCE</h4>
+          <p className="text-xl text-slate-400 leading-relaxed">Étudiez gratuitement et gagnez un salaire dès la 1ère année. L'expérience pro avant tout.</p>
         </div>
-        <div className="hidden lg:block rounded-3xl overflow-hidden border-2 border-white/10">
-          <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=1000" className="w-full h-[500px] object-cover" alt="Collaboration" />
+        <div className="p-10 bg-white/5 backdrop-blur-xl rounded-[3rem] border-emerald-500/20">
+          <h4 className="text-3xl font-black text-emerald-400 mb-6 tracking-tighter">CHÔMAGE 0%</h4>
+          <p className="text-xl text-slate-400 leading-relaxed">Le secteur recrute massivement. Plusieurs offres avant même d'être diplômé.</p>
+        </div>
+        <div className="p-10 bg-white/5 backdrop-blur-xl rounded-[3rem] border-yellow-500/20">
+          <h4 className="text-3xl font-black text-yellow-400 mb-6 tracking-tighter">ÉVOLUTION</h4>
+          <p className="text-xl text-slate-400 leading-relaxed">L'informatique est partout : luxe, sport, santé, spatial. Le monde est à vous.</p>
         </div>
       </div>
     </div>,
 
-    // 3. Comparatif 2030 (SISR vs SLAM)
-    <div key="s2" className="h-full flex flex-col justify-center">
-      <h2 className="text-4xl font-bold font-heading mb-10 text-center">Deux parcours, une même révolution</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="glass-panel p-8 rounded-3xl border-cyan-500/30">
-          <ShieldCheck className="text-cyan-400 mb-4" size={48} />
-          <h3 className="text-3xl font-bold text-cyan-400 mb-4">SISR</h3>
-          <p className="text-slate-300 text-xl">L'expert qui assure que l'IA tourne sur des infrastructures <span className="text-white font-bold">invulnérables</span>.</p>
+    // 5. Interaction 1: Deepfake
+    <div key="s4" className="text-center max-w-6xl mx-auto space-y-12">
+      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">Interaction #1 : <span className="text-red-500">Alerte Deepfake</span></h2>
+      <p className="text-2xl text-slate-400 italic">Sauriez-vous différencier un humain d'une IA ?</p>
+      <div className="grid grid-cols-2 gap-8">
+        <div className="relative group cursor-pointer overflow-hidden rounded-[2rem] border-4 border-transparent hover:border-cyan-500 transition-all" onClick={() => alert('GAGNÉ ! C était l humain. Mais l IA progresse chaque jour.')}>
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800" className="w-full h-80 object-cover opacity-80 group-hover:opacity-100" alt="A" />
+          <div className="absolute bottom-6 left-6 text-2xl font-black bg-slate-900/80 px-6 py-3 rounded-xl">PHOTO A</div>
         </div>
-        <div className="glass-panel p-8 rounded-3xl border-green-500/30">
-          <Code2 className="text-green-400 mb-4" size={48} />
-          <h3 className="text-3xl font-bold text-green-400 mb-4">SLAM</h3>
-          <p className="text-slate-300 text-xl">Le créateur qui injecte de l'<span className="text-white font-bold">intelligence</span> dans chaque ligne de code.</p>
+        <div className="relative group cursor-pointer overflow-hidden rounded-[2rem] border-4 border-transparent hover:border-red-500 transition-all" onClick={() => alert('PERDU ! C était l IA. En SISR, vous apprenez à bloquer ces fraudes.')}>
+          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=800" className="w-full h-80 object-cover opacity-80 group-hover:opacity-100" alt="B" />
+          <div className="absolute bottom-6 left-6 text-2xl font-black bg-slate-900/80 px-6 py-3 rounded-xl">PHOTO B</div>
         </div>
       </div>
     </div>,
 
-    // --- DIAPOS CENTRALES IA (10 Slides) ---
-    
-    // 4. IA : Menace ou Exosquelette ?
-    <div key="s3" className="h-full flex flex-col justify-center text-center">
-       <div className="max-w-4xl mx-auto">
-          <h2 className="text-5xl font-bold font-heading mb-8">1. IA : Menace ou Exosquelette ?</h2>
-          <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000" className="w-full h-64 object-cover rounded-3xl mb-8 border-2 border-white/10 shadow-2xl" alt="AI Robot" />
-          <InteractiveSection 
-            question="Question : Levez la main ceux qui pensent que l'IA va faire disparaître les informaticiens ?"
-            answer="L'IA ne remplacera pas l'informaticien. L'informaticien qui utilise l'IA remplacera celui qui ne l'utilise pas."
-          />
-       </div>
+    // 6. Interaction 2: Voyage Snap
+    <div key="s5" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="space-y-10">
+        <h2 className="text-6xl font-black font-heading uppercase leading-tight tracking-tighter">Interaction #2 :<br />Le voyage de ton Snap</h2>
+        <p className="text-2xl text-slate-400">Cliquez pour voir les étapes techniques gérées par un technicien SISR :</p>
+        <div className="space-y-6">
+          <button className="w-full p-8 bg-white/5 border border-white/10 rounded-3xl text-left hover:bg-white/10 transition-all" onClick={() => alert('Étape 1 : Chiffrement SSL/TLS pour que personne n intercepte ta photo.')}>1. CHIFFREMENT SUR TON TÉLÉPHONE</button>
+          <button class="w-full p-8 bg-white/5 border border-white/10 rounded-3xl text-left hover:bg-white/10 transition-all" onClick={() => alert('Étape 2 : Routage via fibre optique et serveurs CDN pour une latence < 10ms.')}>2. ROUTAGE MONDIAL HAUTE VITESSE</button>
+        </div>
+      </div>
+      <div className="bg-slate-900 rounded-[4rem] h-[500px] border-2 border-white/5 flex items-center justify-center relative overflow-hidden shadow-2xl">
+        <Globe className="w-72 h-72 text-cyan-900/20 animate-spin-slow" />
+        <div className="absolute w-8 h-8 bg-cyan-500 rounded-full animate-ping"></div>
+      </div>
     </div>,
 
-    // 5. 2026 : La fin du code "manuel"
-    <div key="s4" className="h-full flex flex-col justify-center">
-       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
-            <h2 className="text-4xl font-bold font-heading mb-6">2. 2026 : Le code assisté</h2>
-            <p className="text-xl text-slate-300 mb-6">Fini l'écriture laborieuse de fonctions basiques. GitHub Copilot et Cursor font 80% du travail répétitif.</p>
-            <div className="bg-black/50 p-6 rounded-xl font-mono text-cyan-400 border border-cyan-500/20">
-              // Prompt: "Crée une API de gestion de parc serveur..."<br/>
-              <span className="animate-pulse">_ [L'IA génère 50 lignes en 1s]</span>
-            </div>
-          </div>
-          <InteractiveSection 
-            question="Question : Qui a déjà utilisé ChatGPT pour corriger un bug ou un devoir ?"
-            answer="C'est bien ! Mais attention : en BTS SIO, on vous apprend à comprendre ce que l'IA écrit pour savoir quand elle se trompe (et elle se trompe souvent)."
-          />
-       </div>
+    // 7. IA Exosquelette
+    <div key="s6" className="text-center max-w-5xl mx-auto space-y-12">
+      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">L'IA n'est pas votre ennemie</h2>
+      <div className="p-16 bg-white/5 backdrop-blur-2xl rounded-[4rem] border border-cyan-500/30">
+        <p className="text-4xl font-light leading-relaxed italic">"L'informaticien qui utilise l'IA remplacera celui qui ne l'utilise pas."</p>
+      </div>
+      <p className="text-3xl text-slate-400">En SLAM, l'IA devient votre <span className="text-white font-bold underline">exosquelette</span> pour coder 10x plus vite.</p>
     </div>,
 
-    // 6. Prompt Engineering : Un vrai métier ?
-    <div key="s5" className="h-full flex flex-col justify-center text-center">
-       <h2 className="text-4xl font-bold font-heading mb-8">3. Parler aux machines</h2>
-       <div className="glass-panel p-10 rounded-[3rem] max-w-2xl mx-auto border-cyan-500/30">
-          <Sparkles className="mx-auto text-cyan-400 mb-6" size={60} />
-          <p className="text-2xl font-bold mb-4">Le "Prompting" n'est que la surface.</p>
-          <p className="text-lg text-slate-400 leading-relaxed">Le vrai métier, c'est de savoir décomposer un problème complexe en instructions logiques. L'IA n'est qu'un traducteur ultra-rapide.</p>
-       </div>
+    // 8. Code Assisté
+    <div key="s7" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="space-y-10">
+        <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">2026 : Le code assisté</h2>
+        <p className="text-2xl text-slate-400">Copilot et Cursor font 80% du travail répétitif. Votre valeur ? Savoir <span className="text-white font-bold">architecturer</span> et <span className="text-white font-bold">sécuriser</span> le tout.</p>
+      </div>
+      <div className="font-mono bg-black p-12 rounded-[3rem] border border-white/10 text-cyan-400 shadow-2xl relative">
+        <div className="absolute top-6 left-10 flex gap-2">
+           <div className="w-3 h-3 rounded-full bg-red-500"></div>
+           <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
+           <div className="w-3 h-3 rounded-full bg-green-500"></div>
+        </div>
+        <div className="mt-8">
+          <p className="opacity-50">// Prompt: Créer une API sécurisée...</p>
+          <p className="animate-pulse">_ Generating secure routes...</p>
+          <p className="text-white mt-6 font-bold text-lg">> DONE in 0.4s</p>
+        </div>
+      </div>
     </div>,
 
-    // 7. AIOps : Le réseau auto-réparateur
-    <div key="s6" className="h-full flex flex-col justify-center">
-       <div className="flex flex-col lg:flex-row gap-10 items-center">
-          <div className="flex-1">
-             <h2 className="text-4xl font-bold font-heading mb-6">4. AIOps (SISR)</h2>
-             <p className="text-xl text-slate-300 mb-6">Imaginez un réseau qui détecte une attaque et se coupe tout seul en 0.001s pour protéger les données.</p>
-             <ul className="space-y-4">
-                <li className="flex gap-4 items-center"><Zap className="text-yellow-400" /> Maintenance prédictive</li>
-                <li className="flex gap-4 items-center"><ShieldCheck className="text-cyan-400" /> Sécurité autonome</li>
-             </ul>
-          </div>
-          <div className="flex-1">
-             <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=800" className="rounded-3xl border-2 border-cyan-500/30" alt="Server Room" />
-          </div>
-       </div>
+    // 9. Prompt Engineering
+    <div key="s8" className="text-center max-w-4xl mx-auto space-y-12">
+      <div className="relative">
+        <Sparkles className="w-40 h-40 text-cyan-400 mx-auto animate-bounce" />
+        <div className="absolute inset-0 bg-cyan-500/20 blur-3xl rounded-full"></div>
+      </div>
+      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">Savoir parler aux machines</h2>
+      <p className="text-2xl text-slate-400 leading-relaxed italic">Le "Prompting" n'est pas un gadget. C'est l'art de décomposer un problème complexe en instructions logiques précises.</p>
     </div>,
 
-    // 8. No-Code & Low-Code : Pourquoi coder ?
-    <div key="s7" className="h-full flex flex-col justify-center">
-       <h2 className="text-4xl font-bold font-heading mb-10 text-center">5. Pourquoi apprendre à coder alors ?</h2>
-       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="glass-panel p-6 rounded-2xl text-center">
-             <h4 className="font-bold text-cyan-400 mb-2">Compréhension</h4>
-             <p>Pour débugger ce que l'IA ne comprend pas.</p>
-          </div>
-          <div className="glass-panel p-6 rounded-2xl text-center">
-             <h4 className="font-bold text-cyan-400 mb-2">Optimisation</h4>
-             <p>Pour rendre les programmes 100x plus économes en énergie.</p>
-          </div>
-          <div className="glass-panel p-6 rounded-2xl text-center">
-             <h4 className="font-bold text-cyan-400 mb-2">Innovation</h4>
-             <p>Pour créer l'IA de demain, pas juste utiliser celle d'hier.</p>
-          </div>
-       </div>
-       <InteractiveSection 
-         question="Si tout le monde peut 'générer' du code, qui sera le plus riche ?"
-         answer="Celui qui sait concevoir l'ARCHITECTURE et la SÉCURITÉ du système global. C'est ce qu'on fait en BTS SIO."
-       />
+    // 10. Pourquoi coder?
+    <div key="s9" className="text-center max-w-7xl mx-auto space-y-20">
+      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">Pourquoi apprendre à coder ?</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="p-12 bg-white/5 rounded-[3rem] border border-white/10 hover:border-cyan-500 transition-all">
+          <h4 className="text-3xl font-black mb-6">COMPRENDRE</h4>
+          <p className="text-xl text-slate-400">Pour corriger l'IA quand elle fait des erreurs fatales ou des "hallucinations".</p>
+        </div>
+        <div className="p-12 bg-white/5 rounded-[3rem] border border-white/10 hover:border-emerald-500 transition-all">
+          <h4 className="text-3xl font-black mb-6">OPTIMISER</h4>
+          <p className="text-xl text-slate-400">Pour rendre les programmes 100x plus économes en énergie et plus rapides.</p>
+        </div>
+        <div className="p-12 bg-white/5 rounded-[3rem] border border-white/10 hover:border-yellow-500 transition-all">
+          <h4 className="text-3xl font-black mb-6">INNOVER</h4>
+          <p className="text-xl text-slate-400">Pour créer les IA de demain, pas juste être un utilisateur passif.</p>
+        </div>
+      </div>
     </div>,
 
-    // 9. L'IA dans la Cyber-attaque
-    <div key="s8" className="h-full flex flex-col justify-center">
-       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000" className="rounded-3xl border-2 border-red-500/30" alt="Cyber War" />
-          <div>
-            <h2 className="text-4xl font-bold font-heading mb-6 text-red-400">6. Dark IA : Le revers de la médaille</h2>
-            <p className="text-xl text-slate-300">Deepfakes, Phishing 2.0 indétectable, virus auto-adaptatifs...</p>
-            <InteractiveSection 
-              question="À votre avis, qui peut contrer une IA malveillante ?"
-              answer="Une IA de défense pilotée par un HUMAIN expert en SISR. La guerre du futur est déjà là."
-            />
-          </div>
-       </div>
+    // 11. AIOps
+    <div key="s10" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="space-y-10">
+        <h2 className="text-6xl font-black font-heading uppercase tracking-tighter text-cyan-400">AIOps (SISR)</h2>
+        <p className="text-3xl text-slate-400 italic font-light">"En 2028, les réseaux se réparent tout seuls."</p>
+        <ul className="space-y-8">
+          <li className="flex items-center gap-6 text-2xl font-bold"><CheckCircle2 className="text-emerald-500 w-8 h-8" /> Auto-détection d'intrusion</li>
+          <li className="flex items-center gap-6 text-2xl font-bold"><CheckCircle2 className="text-emerald-500 w-8 h-8" /> Maintenance prédictive des serveurs</li>
+        </ul>
+      </div>
+      <div className="bg-cyan-500/5 border border-cyan-500/20 rounded-[4rem] p-20 text-center shadow-inner relative overflow-hidden">
+        <Cpu className="w-56 h-56 text-cyan-800 animate-pulse mx-auto" />
+      </div>
     </div>,
 
-    // 10. Souveraineté : Qui possède votre cerveau ?
-    <div key="s9" className="h-full flex flex-col justify-center text-center">
-       <h2 className="text-4xl font-bold font-heading mb-8">7. Souveraineté Numérique</h2>
-       <div className="max-w-3xl mx-auto space-y-8">
-          <p className="text-2xl italic">"Si vous dépendez d'une IA américaine ou chinoise pour coder, vous n'êtes plus libres."</p>
-          <div className="flex justify-center gap-8">
-             <div className="p-4 glass-panel rounded-xl">Mistral AI 🇫🇷</div>
-             <div className="p-4 glass-panel rounded-xl">Llama 🇺🇸</div>
-             <div className="p-4 glass-panel rounded-xl">DeepSeek 🇨🇳</div>
-          </div>
-          <p className="text-slate-400">Le BTS SIO forme les techniciens qui construiront le Cloud de confiance européen.</p>
-       </div>
+    // 12. Dark IA
+    <div key="s11" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="text-center relative">
+        <ShieldAlert className="w-72 h-72 text-red-900 mx-auto opacity-30 animate-pulse" />
+        <div className="absolute inset-0 bg-red-500/5 blur-[100px]"></div>
+      </div>
+      <div className="space-y-10 p-16 border-2 border-red-500/20 bg-red-500/5 rounded-[4rem] shadow-2xl">
+        <h2 className="text-7xl font-black text-red-500 uppercase leading-none tracking-tighter">DARK IA</h2>
+        <p className="text-3xl text-slate-300">Virus auto-adaptatifs, Phishing indétectable... La menace est invisible.</p>
+        <p className="text-2xl font-black uppercase text-red-400 tracking-widest underline decoration-red-500 decoration-4 underline-offset-8">Le technicien SISR est le rempart.</p>
+      </div>
     </div>,
 
-    // 11. Créativité vs Algorithme
-    <div key="s10" className="h-full flex flex-col justify-center">
-       <h2 className="text-4xl font-bold font-heading mb-8">8. La dernière frontière : L'Humain</h2>
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="glass-panel p-8 rounded-3xl">
-             <h4 className="text-cyan-400 font-bold mb-4">L'IA Excel en :</h4>
-             <ul className="list-disc list-inside space-y-2 text-slate-400">
-                <li>Vitesse de calcul</li>
-                <li>Synthèse de données</li>
-                <li>Tâches répétitives</li>
-             </ul>
-          </div>
-          <div className="glass-panel p-8 rounded-3xl border-white/20">
-             <h4 className="text-green-400 font-bold mb-4">VOUS excellez en :</h4>
-             <ul className="list-disc list-inside space-y-2 text-white">
-                <li>Empathie client</li>
-                <li>Éthique et Jugement</li>
-                <li>Créativité pure</li>
-             </ul>
-          </div>
-       </div>
-       <InteractiveSection 
-         question="Citez une chose qu'une IA ne fera JAMAIS ?"
-         answer="Prendre la responsabilité d'une erreur. C'est l'humain qui décide, l'IA qui exécute."
-       />
+    // 13. Souveraineté
+    <div key="s12" className="text-center max-w-5xl mx-auto space-y-20">
+      <h2 className="text-7xl font-black font-heading uppercase tracking-tighter leading-none">Souveraineté Numérique</h2>
+      <div className="flex justify-center gap-12 font-bold text-3xl italic">
+        <span className="px-12 py-5 bg-white/5 rounded-full border border-white/10 shadow-lg">Mistral AI 🇫🇷</span>
+        <span className="px-12 py-5 bg-white/5 rounded-full border border-white/10 shadow-lg">Llama 🇺🇸</span>
+      </div>
+      <p className="text-4xl text-slate-400 leading-relaxed font-light">"Le BTS SIO forme les experts qui bâtiront l'indépendance de l'Europe."</p>
     </div>,
 
-    // 12. JEU DU PENDU : Compétence clé
+    // 14. Interaction 3: Smartphone Mine d'Or
+    <div key="s13" className="text-center space-y-16 max-w-7xl mx-auto">
+      <h2 className="text-7xl font-black font-heading uppercase tracking-tighter">Interaction #3 : <br />Ton Smartphone vaut de l'or</h2>
+      <p className="text-3xl text-slate-400 mb-10">Cliquez sur les composants pour voir votre futur salaire :</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+        <div className="p-12 bg-white/5 rounded-[3.5rem] cursor-pointer hover:scale-110 transition-all border border-white/5 hover:border-cyan-500" onClick={() => alert('Expert Cybersécurité (SISR) : 5500€ / mois')}>
+          <ShieldCheck className="w-20 h-20 mb-8 text-cyan-400 mx-auto" />
+          <span className="font-black text-2xl uppercase tracking-tighter">MODEM 6G</span>
+        </div>
+        <div className="p-12 bg-white/5 rounded-[3.5rem] cursor-pointer hover:scale-110 transition-all border border-white/5 hover:border-emerald-500" onClick={() => alert('Développeur Mobile (SLAM) : 4800€ / mois')}>
+          <Smartphone className="w-20 h-20 mb-8 text-emerald-400 mx-auto" />
+          <span className="font-black text-2xl uppercase tracking-tighter">UX DESIGN</span>
+        </div>
+        <div className="p-12 bg-white/5 rounded-[3.5rem] cursor-pointer hover:scale-110 transition-all border border-white/5 hover:border-blue-500" onClick={() => alert('Architecte Cloud (SISR) : 6000€ / mois')}>
+          <Globe className="w-20 h-20 mb-8 text-blue-400 mx-auto" />
+          <span className="font-black text-2xl uppercase tracking-tighter">CLOUD OPS</span>
+        </div>
+        <div className="p-12 bg-white/5 rounded-[3.5rem] cursor-pointer hover:scale-110 transition-all border border-white/5 hover:border-purple-500" onClick={() => alert('Ingénieur IA (SLAM) : 7500€ / mois')}>
+          <Cpu className="w-20 h-20 mb-8 text-purple-400 mx-auto" />
+          <span className="font-black text-2xl uppercase tracking-tighter">AI ENGINE</span>
+        </div>
+      </div>
+    </div>,
+
+    // 15. Interaction 4: Pollution Numérique
+    <div key="s14" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div className="space-y-12">
+        <h2 className="text-7xl font-black font-heading uppercase leading-tight tracking-tighter">Interaction #4 :<br /><span className="text-emerald-500 italic">Pollution Invisible</span></h2>
+        <p className="text-3xl text-slate-400 italic">"Regarder une vidéo en 4K pollue-t-il plus qu'un trajet de 2km en voiture ?"</p>
+        <div className="flex gap-10 mt-12">
+          <button onClick={() => alert('VRAI ! Le traitement massif des données 4K dans les datacenters demande une énergie colossale.')} className="flex-1 py-12 bg-emerald-500 text-slate-950 font-black rounded-[2.5rem] text-4xl shadow-2xl hover:scale-105 transition-transform">VRAI</button>
+          <button onClick={() => alert('FAUX ! Mais l écart se réduit chaque année. En SIO, on apprend le Green-IT.')} className="flex-1 py-12 border-4 border-white/20 rounded-[2.5rem] text-4xl font-black hover:bg-white/5 transition-all">FAUX</button>
+        </div>
+      </div>
+      <div className="bg-emerald-500/5 p-16 rounded-[5rem] text-center border border-emerald-500/20 relative">
+        <Leaf className="w-72 h-72 text-emerald-900 mx-auto animate-pulse" />
+        <div className="absolute inset-0 bg-emerald-500/5 blur-[120px]"></div>
+      </div>
+    </div>,
+
+    // 16. Interaction 5: App Dream Generator
+    <div key="s15" className="text-center max-w-7xl mx-auto space-y-16">
+      <h2 className="text-7xl font-black font-heading uppercase tracking-tighter leading-none">Interaction #5 :<br />Ton projet de rêve</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <div className="p-12 bg-white/5 backdrop-blur-md rounded-[4rem] cursor-pointer hover:border-red-500 border border-white/5 transition-all" onClick={() => alert('SLAM est fait pour toi ! Concevoir l IA de santé du futur.')}>
+          <HeartPulse className="w-20 h-20 mb-8 text-red-500 mx-auto" />
+          <h4 className="font-black text-3xl mb-4 uppercase tracking-tighter">SANTE IA</h4>
+          <p className="text-lg opacity-60 italic">Diagnostiquer via la voix.</p>
+        </div>
+        <div className="p-12 bg-white/5 backdrop-blur-md rounded-[4rem] cursor-pointer hover:border-cyan-500 border border-white/5 transition-all" onClick={() => alert('SISR est ton domaine ! Gérer des serveurs mondiaux ultra-rapides.')}>
+          <Gamepad className="w-20 h-20 mb-8 text-cyan-400 mx-auto" />
+          <h4 className="font-black text-3xl mb-4 uppercase tracking-tighter">CLOUD GAMING</h4>
+          <p className="text-lg opacity-60 italic">Jouer en 8K sans console.</p>
+        </div>
+        <div className="p-12 bg-white/5 backdrop-blur-md rounded-[4rem] cursor-pointer hover:border-yellow-500 border border-white/5 transition-all" onClick={() => alert('Mixte SISR/SLAM ! Sécuriser la finance mondiale.')}>
+          <Briefcase className="w-20 h-20 mb-8 text-yellow-500 mx-auto" />
+          <h4 className="font-black text-3xl mb-4 uppercase tracking-tighter">FINTECH 2.0</h4>
+          <p className="text-lg opacity-60 italic">Une banque sécurisée par IA.</p>
+        </div>
+      </div>
+    </div>,
+
+    // 17. Créativité vs Algorithme
+    <div key="s16" className="grid grid-cols-2 gap-12 max-w-7xl mx-auto items-stretch h-[60vh]">
+      <div className="p-16 bg-white/5 rounded-[4rem] border border-white/10 space-y-8 flex flex-col justify-center text-center opacity-60">
+        <h3 className="text-5xl font-black text-slate-500 uppercase italic">L'IA</h3>
+        <p className="text-3xl font-light">Vitesse, Synthèse, Routine, Calcul.</p>
+      </div>
+      <div className="p-16 bg-white/10 rounded-[4rem] border border-cyan-500/30 space-y-8 flex flex-col justify-center text-center shadow-2xl">
+        <h3 className="text-5xl font-black text-white uppercase italic">VOUS</h3>
+        <p className="text-3xl font-bold leading-relaxed">Créativité, Éthique, Empathie, Jugement.</p>
+      </div>
+    </div>,
+
+    // 18. Hangman Game
     <div key="hangman" className="h-full">
        <Hangman />
     </div>,
 
-    // 13. Apprendre à Désapprendre
-    <div key="s11" className="h-full flex flex-col justify-center text-center">
-       <h2 className="text-4xl font-bold font-heading mb-8">9. Le cycle de vie d'un expert</h2>
-       <div className="relative h-64 flex items-center justify-center">
-          <div className="absolute inset-0 flex items-center justify-center">
-             <div className="w-full h-2 bg-slate-800 rounded-full"></div>
-          </div>
-          <div className="flex justify-between w-full relative">
-             <div className="flex flex-col items-center">
-                <div className="w-6 h-6 bg-cyan-500 rounded-full mb-2"></div>
-                <span className="text-sm">2024: Apprendre Python</span>
-             </div>
-             <div className="flex flex-col items-center">
-                <div className="w-6 h-6 bg-green-500 rounded-full mb-2"></div>
-                <span className="text-sm">2026: Maîtriser les LLM</span>
-             </div>
-             <div className="flex flex-col items-center">
-                <div className="w-6 h-6 bg-yellow-500 rounded-full mb-2"></div>
-                <span className="text-sm">2028: IA Quantique ?</span>
-             </div>
-          </div>
-       </div>
-       <p className="mt-8 text-xl text-slate-300">En SIO, on n'apprend pas un métier figé, on apprend à <span className="text-white font-bold">apprendre en continu</span>.</p>
+    // 19. Cycle de vie
+    <div key="s17" className="text-center max-w-5xl mx-auto space-y-20">
+      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">Apprendre à désapprendre</h2>
+      <div className="flex justify-between items-center opacity-40 px-10">
+        <div className="flex flex-col items-center"><div className="w-8 h-8 bg-cyan-500 rounded-full mb-4"></div><span className="text-sm uppercase font-black">2024: Python</span></div>
+        <div className="flex-1 h-1 bg-slate-800 mx-10"></div>
+        <div className="flex flex-col items-center"><div className="w-8 h-8 bg-emerald-500 rounded-full mb-4"></div><span className="text-sm uppercase font-black">2026: Prompting</span></div>
+        <div className="flex-1 h-1 bg-slate-800 mx-10"></div>
+        <div className="flex flex-col items-center"><div className="w-8 h-8 bg-yellow-500 rounded-full mb-4"></div><span className="text-sm uppercase font-black">2028: Quantum</span></div>
+      </div>
+      <p className="text-4xl text-slate-400 leading-relaxed italic font-light">"On n'apprend pas un métier figé, on apprend à évoluer avec son époque."</p>
     </div>,
 
-    // 14. SIO : Le Cockpit
-    <div key="s12" className="h-full flex flex-col justify-center">
-       <div className="text-center mb-12">
-          <h2 className="text-5xl font-bold font-heading mb-4">10. Le BTS SIO est votre Cockpit</h2>
-          <p className="text-xl text-slate-400">Ne soyez pas le passager de l'IA. Soyez le pilote.</p>
-       </div>
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-cyan-500/10 p-8 rounded-3xl border border-cyan-500/30">
-             <h4 className="text-2xl font-bold mb-4">Option SISR</h4>
-             <p>Construisez le monde où l'IA peut exister en toute sécurité.</p>
-          </div>
-          <div className="bg-green-500/10 p-8 rounded-3xl border border-green-500/30">
-             <h4 className="text-2xl font-bold mb-4">Option SLAM</h4>
-             <p>Donnez vie à l'IA pour résoudre les problèmes du monde réel.</p>
-          </div>
-       </div>
+    // 20. SIO Cockpit
+    <div key="s18" className="text-center max-w-6xl mx-auto space-y-12">
+      <h2 className="text-8xl font-black font-heading uppercase leading-none tracking-tighter">Le BTS SIO est <br />votre <span className="text-cyan-400">COCKPIT</span></h2>
+      <p className="text-4xl text-slate-500 font-light italic leading-tight max-w-4xl mx-auto">Ne soyez pas le passager de l'Intelligence Artificielle. <span className="text-white font-bold">Soyez son pilote.</span></p>
     </div>,
 
-    // --- FIN DU CORE IA ---
-
-    // 15. Journée SISR
-    <div key="s13" className="h-full flex flex-col justify-center">
-      <div className="flex flex-col lg:flex-row gap-10 items-center">
-        <div className="flex-1">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="p-3 rounded-xl bg-cyan-500 text-slate-950 shadow-[0_0_15px_rgba(6,182,212,0.8)]"><ShieldCheck /></div>
-            <h2 className="text-4xl font-bold font-heading italic">Mission : Cyber-Admin (SISR)</h2>
-          </div>
-          <div className="space-y-4">
-            {[
-              { time: "09:00", task: "Analyse des tentatives d'intrusion de la nuit via IA Sentinel." },
-              { time: "11:00", task: "Déploiement auto d'un cluster Cloud crypté (Infrastructure as Code)." },
-              { time: "15:00", task: "Audit de sécurité sur les accès biométriques." }
-            ].map((item, idx) => (
-              <div key={idx} className="flex gap-4 items-center bg-white/5 p-4 rounded-xl border border-white/5">
-                <div className="text-cyan-400 font-mono font-bold">{item.time}</div>
-                <div className="text-lg text-slate-200">{item.task}</div>
-              </div>
-            ))}
-          </div>
+    // 21. Mission SISR
+    <div key="s19" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
+      <div className="space-y-12">
+        <h2 className="text-6xl font-black font-heading uppercase tracking-tighter text-cyan-400 leading-none">Mission SISR</h2>
+        <p className="text-3xl text-slate-300 italic leading-relaxed">"Installer une infrastructure Cloud ultra-sécurisée pour une équipe de Formule 1 en temps réel."</p>
+        <div className="p-10 bg-black/80 rounded-[3rem] border border-cyan-500/20 font-mono text-cyan-500 text-lg shadow-inner">
+          <p>> Deploying security protocol alpha...</p>
+          <p>> Checking data encryption (AES-256)...</p>
+          <p className="text-white font-black mt-4">> SYSTEM SECURE (UPTIME 100%)</p>
         </div>
-        <div className="flex-1 w-full h-80 lg:h-full min-h-[300px] rounded-3xl overflow-hidden border-2 border-cyan-500/50">
-          <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover shadow-inner" alt="Cyber Ops" />
+      </div>
+      <div className="rounded-[4rem] shadow-2xl h-[550px] overflow-hidden border border-white/5">
+        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover" alt="SISR Ops" />
+      </div>
+    </div>,
+
+    // 22. Mission SLAM
+    <div key="s20" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
+      <div className="rounded-[4rem] shadow-2xl h-[550px] overflow-hidden border border-white/5">
+        <img src="https://images.unsplash.com/photo-1555099962-41d06ee9360c?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover" alt="SLAM Ops" />
+      </div>
+      <div className="space-y-12">
+        <h2 className="text-6xl font-black font-heading uppercase tracking-tighter text-emerald-400 leading-none">Mission SLAM</h2>
+        <p className="text-3xl text-slate-300 italic leading-relaxed">"Développer une application mobile capable de traduire instantanément toutes les langues via IA neurale."</p>
+        <div className="p-10 bg-black/80 rounded-[3rem] border border-emerald-500/20 font-mono text-emerald-500 text-lg shadow-inner">
+          <p>import neural_translator as nt</p>
+          <p>model = nt.load_global_voice()</p>
+          <p className="text-white font-black mt-4">> APP READY FOR DEPLOYMENT</p>
         </div>
       </div>
     </div>,
 
-    // 16. Journée SLAM
-    <div key="s14" className="h-full flex flex-col justify-center">
-      <div className="flex flex-col lg:flex-row-reverse gap-10 items-center">
-        <div className="flex-1">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="p-3 rounded-xl bg-green-500 text-slate-950 shadow-[0_0_15px_rgba(34,197,94,0.8)]"><Code2 /></div>
-            <h2 className="text-4xl font-bold font-heading italic">Mission : AI-Developer (SLAM)</h2>
-          </div>
-          <div className="space-y-4">
-            {[
-              { time: "10:00", task: "Entraînement d'un modèle d'IA métier pour un client." },
-              { time: "14:00", task: "Debugging via analyseur de flux de code intelligent." },
-              { time: "16:30", task: "Revue de code sur une App SaaS d'économie circulaire." }
-            ].map((item, idx) => (
-              <div key={idx} className="flex gap-4 items-center bg-white/5 p-4 rounded-xl border border-white/5">
-                <div className="text-green-400 font-mono font-bold">{item.time}</div>
-                <div className="text-lg text-slate-200">{item.task}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-        <div className="flex-1 w-full h-80 lg:h-full min-h-[300px] rounded-3xl overflow-hidden border-2 border-green-500/50">
-          <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1000" className="w-full h-full object-cover" alt="Coding" />
-        </div>
+    // 23. Chiffres Géants
+    <div key="s21" className="text-center space-y-24">
+      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter leading-none">Le secteur qui ne dort jamais</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-16 max-w-7xl mx-auto">
+        <div className="group"><div className="text-[12rem] font-black text-cyan-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">38K</div><h4 className="text-3xl font-bold text-slate-500 uppercase tracking-widest">Salaire Junior (€)</h4></div>
+        <div className="group"><div className="text-[12rem] font-black text-emerald-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">98%</div><h4 className="text-3xl font-bold text-slate-500 uppercase tracking-widest">Embauche immédiate</h4></div>
+        <div className="group"><div className="text-[12rem] font-black text-yellow-500 mb-0 tracking-tighter group-hover:scale-110 transition-transform">+200k</h4><h4 className="text-3xl font-bold text-slate-500 uppercase tracking-widest">Offres en France</h4></div>
       </div>
     </div>,
 
-    // 17. Chiffres Clés
-    <div key="s15" className="h-full flex flex-col justify-center">
-      <h2 className="text-4xl font-bold font-heading mb-8 text-center text-white">L'informatique : Un ascenseur social</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        <div className="p-8 glass-panel rounded-3xl text-center border-b-4 border-cyan-500">
-          <div className="text-4xl font-black text-cyan-400 mb-2">38 k€</div>
-          <div className="text-lg font-bold">Salaire moyen junior</div>
-        </div>
-        <div className="p-8 glass-panel rounded-3xl text-center border-b-4 border-green-500">
-          <div className="text-4xl font-black text-green-400 mb-2">+150 000</div>
-          <div className="text-lg font-bold">Postes à pourvoir</div>
-        </div>
-        <div className="p-8 glass-panel rounded-3xl text-center border-b-4 border-yellow-500">
-          <div className="text-4xl font-black text-yellow-400 mb-2">95%</div>
-          <div className="text-lg font-bold">CDI dès la sortie</div>
-        </div>
-      </div>
-      <InteractiveSection 
-        question="Est-ce que c'est difficile ?"
-        answer="C'est exigeant. Mais avec de la logique, de la passion et beaucoup de curiosité, n'importe qui peut devenir un expert."
-      />
-    </div>,
-
-    // 18. Passerelles
-    <div key="s16" className="h-full flex flex-col justify-center text-center">
-      <h2 className="text-5xl font-bold font-heading mb-6">Un choix, mille opportunités.</h2>
-      <p className="text-2xl text-slate-300 max-w-4xl mx-auto leading-relaxed mb-8">
-        Bachelor, Licence Pro, Master, École d'ingé... Le BTS SIO n'est que le premier étage de la fusée.
-      </p>
-      <div className="flex justify-center items-center gap-12 text-3xl font-bold">
-        <div className="text-cyan-400">SISR</div>
-        <div className="text-white animate-pulse"><Repeat size={48} /></div>
-        <div className="text-green-400">SLAM</div>
-      </div>
-    </div>,
-
-    // 19. Quiz
-    <div key="s17" className="h-full">
+    // 24. Quiz Final
+    <div key="quiz" className="h-full">
       <Quiz />
     </div>,
 
-    // 20. Conclusion
-    <div key="s18" className="h-full flex flex-col items-center justify-center text-center relative">
-      <div className="absolute inset-0 z-0 opacity-10">
-         <img src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&q=80&w=2000" className="w-full h-full object-cover" alt="End" />
-      </div>
-      <h2 className="text-6xl font-black font-heading mb-8 z-10">VOTRE AVENTURE <span className="text-cyan-400">SIO</span> COMMENCE</h2>
-      <div className="flex flex-col md:flex-row gap-12 items-center glass-panel p-10 rounded-[3rem] border-white/20 z-10 shadow-2xl">
-        <div className="bg-white p-4 rounded-3xl">
-          <QrCode size={180} className="text-slate-900" />
+    // 25. Conclusion
+    <div key="s22" className="text-center max-w-7xl mx-auto space-y-20">
+      <h2 className="text-[10rem] font-black font-heading mb-10 italic tracking-tighter leading-none">CODE <br /><span className="text-cyan-400">THE WORLD</span></h2>
+      <div className="p-20 bg-white/5 backdrop-blur-3xl rounded-[5rem] flex flex-col md:flex-row items-center justify-center gap-24 shadow-2xl border border-white/10">
+        <div className="bg-white p-12 rounded-[4rem] shadow-2xl hover:rotate-6 transition-transform cursor-pointer">
+          <QrCode size={200} className="text-slate-900" />
         </div>
-        <div className="text-left space-y-6">
-          <p className="text-2xl font-bold italic text-slate-300">"Prêts à coder le monde de demain ?"</p>
-          <div className="space-y-4">
-             <button className="w-full flex items-center justify-between px-8 py-4 cyber-gradient rounded-2xl text-slate-900 font-black text-xl hover:scale-105 transition-transform" onClick={() => window.open('https://parcoursup.fr', '_blank')}>
-               DOSSIER PARCOURSUP <ArrowRight />
-             </button>
-             <p className="text-center text-slate-500 font-mono text-sm uppercase tracking-widest">Scannez pour la fiche formation</p>
+        <div className="text-left space-y-12 max-w-lg">
+          <p className="text-4xl font-bold text-slate-300 italic leading-relaxed">"Ne subissez pas le futur. Soyez celui qui le programme."</p>
+          <div className="space-y-6">
+            <button onClick={() => window.open('https://parcoursup.fr', '_blank')} className="w-full py-10 cyber-gradient rounded-[2.5rem] text-slate-950 font-black text-5xl hover:scale-105 transition-all shadow-2xl flex justify-between px-16 items-center">
+              POSTULER <ArrowRight size={48} />
+            </button>
+            <p className="text-center text-slate-600 font-mono text-sm uppercase tracking-[0.3em]">Scannez pour la fiche formation</p>
           </div>
         </div>
       </div>
@@ -444,61 +434,58 @@ const App: React.FC = () => {
   ];
 
   return (
-    <div className="h-screen w-full relative overflow-hidden bg-slate-950 selection:bg-cyan-500 selection:text-white">
-      {/* Background interactif */}
+    <div className="h-screen w-full relative overflow-hidden bg-slate-950">
+      {/* Background Decor */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(15,23,42,1)_0%,rgba(2,6,23,1)_100%)]"></div>
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-cyan-900/10 rounded-full blur-[150px] animate-pulse"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-green-900/10 rounded-full blur-[150px] animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(15,23,42,1)_0%,rgba(2,6,23,1)_100%)]"></div>
+        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(rgba(6, 182, 212, 0.2) 1px, transparent 0)', backgroundSize: '60px 60px' }}></div>
       </div>
 
-      {/* Progress Bar améliorée pour projecteur */}
-      <div className="absolute top-0 left-0 w-full h-3 z-50 flex shadow-[0_4px_10px_rgba(0,0,0,0.5)]">
+      {/* Progress Bar */}
+      <div className="absolute top-0 left-0 w-full h-3 z-50 flex shadow-2xl">
         {Array.from({ length: totalSlides }).map((_, i) => (
           <div 
             key={i} 
-            className={`flex-1 h-full transition-all duration-500 border-r border-black/20 ${i <= currentSlide ? 'bg-cyan-500 shadow-[0_0_15px_rgba(6,182,212,1)]' : 'bg-white/5'}`}
+            className={`flex-1 h-full transition-all duration-700 ${i <= currentSlide ? 'bg-cyan-500 shadow-[0_0_20px_#06b6d4]' : 'bg-white/5'}`}
           />
         ))}
       </div>
 
-      {/* Content */}
-      <main className="h-full container mx-auto px-6 flex items-center justify-center relative z-10">
+      {/* Slide Content */}
+      <main className="h-full container mx-auto px-6 relative z-10 flex flex-col justify-center">
         <SlideWrapper active={true}>
           {slides[currentSlide]}
         </SlideWrapper>
       </main>
 
-      {/* Navigation Controls optimisés pour grand écran */}
-      <div className="absolute bottom-6 left-0 w-full px-8 flex justify-between items-center z-50">
-        <div className="hidden md:block text-slate-500 font-mono text-xl font-bold">
-          <span className="text-cyan-400">{String(currentSlide + 1).padStart(2, '0')}</span> <span className="text-slate-700">/</span> {totalSlides}
+      {/* Navigation UI */}
+      <nav className="absolute bottom-10 left-0 w-full px-16 flex justify-between items-center z-50">
+        <div className="font-mono text-5xl font-black text-slate-800 tracking-tighter">
+          <span className="text-cyan-600">{String(currentSlide + 1).padStart(2, '0')}</span> / {totalSlides}
         </div>
         
-        <div className="flex gap-4">
+        <div className="flex gap-10">
           <button 
             onClick={prevSlide}
             disabled={currentSlide === 0}
-            className={`p-4 rounded-2xl glass-panel transition-all border-2 ${currentSlide === 0 ? 'opacity-10 cursor-not-allowed' : 'hover:bg-white/10 border-white/20'}`}
-            title="Précédent (Flèche gauche)"
+            className={`p-6 rounded-[2rem] bg-white/5 border-2 border-white/5 transition-all ${currentSlide === 0 ? 'opacity-5' : 'hover:bg-white/10 hover:border-white/20'}`}
           >
-            <ChevronLeft size={28} />
+            <ChevronLeft size={48} />
           </button>
           <button 
             onClick={nextSlide}
             disabled={currentSlide === totalSlides - 1}
-            className={`p-4 rounded-2xl glass-panel transition-all border-2 ${currentSlide === totalSlides - 1 ? 'opacity-10 cursor-not-allowed' : 'hover:bg-cyan-500/20 text-cyan-400 border-cyan-500/50 shadow-[0_0_20px_rgba(6,182,212,0.2)]'}`}
-            title="Suivant (Espace / Flèche droite)"
+            className={`p-6 rounded-[2rem] bg-cyan-500/10 border-2 border-cyan-500/30 text-cyan-400 transition-all ${currentSlide === totalSlides - 1 ? 'opacity-5' : 'hover:scale-110 hover:border-cyan-500 hover:shadow-[0_0_30px_rgba(6,182,212,0.3)]'}`}
           >
-            <ChevronRight size={28} />
+            <ChevronRight size={48} />
           </button>
         </div>
 
-        <div className="hidden md:flex items-center gap-3 text-slate-500 text-xs font-black uppercase tracking-[0.2em]">
-          <kbd className="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-slate-300">ESPACE</kbd>
-          <span className="opacity-50">SUIVANT</span>
+        <div className="hidden md:flex items-center gap-4 text-slate-600 font-black uppercase tracking-[0.4em] text-xs">
+          <span className="px-4 py-2 bg-white/5 rounded-xl">ESPACE</span>
+          <span>SUIVANT</span>
         </div>
-      </div>
+      </nav>
     </div>
   );
 };
