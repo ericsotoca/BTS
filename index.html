@@ -20,29 +20,27 @@
         .grid-bg { position: absolute; inset: 0; background-image: radial-gradient(rgba(6,182,212,0.1) 1px, transparent 0); background-size: 40px 40px; z-index: -1; }
         .salary-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100; align-items: center; justify-content: center; }
         
-        /* Base Flip Card Logic */
         .flip-card { background-color: transparent; perspective: 1000px; cursor: pointer; width: 100%; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .flip-card-front { background: rgba(255, 255, 255, 0.03); }
-        .flip-card-back { transform: rotateY(180deg); color: #020617; padding: 1rem; }
-        
-        /* Card Back Colors */
+        .flip-card-front { background: rgba(255, 255, 255, 0.03); z-index: 2; }
+        .flip-card-back { transform: rotateY(180deg); color: #020617; padding: 1rem; z-index: 1; }
         .bg-cyan-flip { background: #06b6d4; }
         .bg-emerald-flip { background: #10b981; }
         .bg-purple-flip { background: #a855f7; }
         .bg-yellow-flip { background: #eab308; }
 
-        /* Specific Slide 10 Sizing */
         .s10-card { height: 320px; }
         .s10-card .flip-card-front { font-size: 5rem; font-weight: 900; }
-        
-        /* Specific Slide 19 Sizing */
         .s19-card { height: 380px; }
+        .s19-card .flip-card-back { padding: 1rem; overflow: hidden; }
 
-        .animate-spin-slow { animation: spin 8s linear infinite; }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
+        .glitch-effect { animation: glitch 0.2s infinite; border-color: #ef4444 !important; }
+        
+        .scan-progress { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; width: 100%; }
+        .scan-bar { height: 100%; background: var(--accent); width: 100%; transition: width 1s linear; }
     </style>
 <script type="importmap">
 {
@@ -79,6 +77,8 @@
         let current = 0;
         let score = 0;
         let qStep = 0;
+        let defenseGameActive = false;
+        let gStep = 0;
 
         const slides = [
             // 1
@@ -115,11 +115,16 @@
                     <div class="p-8 glass rounded-3xl border-emerald-500/20"><h4 class="text-2xl font-black text-emerald-400 mb-4 uppercase">Zéro Chômage</h4><p class="text-slate-400">98% de taux d'embauche immédiate dans des secteurs porteurs.</p></div>
                     <div class="p-8 glass rounded-3xl border-yellow-500/20"><h4 class="text-2xl font-black text-yellow-400 mb-4 uppercase">Tremplin</h4><p class="text-slate-400">Poursuite d'études facilitée vers des écoles d'ingénieurs et Masters.</p></div>
                 </div>
+                <div class="mt-12 p-8 border-t border-white/10 animate-pulse">
+                    <p class="text-2xl font-bold text-cyan-400 italic mb-6">Mais l'excellence, c'est d'abord savoir discerner le vrai du faux...</p>
+                    <button onclick="next()" class="text-xl font-black uppercase tracking-widest hover:text-white transition-colors flex items-center gap-2 mx-auto">Tester mes yeux <i data-lucide="arrow-right"></i></button>
+                </div>
             </div>`,
             // 5
             `<div class="text-center space-y-10 max-w-5xl mx-auto">
-                <h2 class="text-5xl font-black font-heading">#1 ALERTE DEEPFAKE</h2>
-                <p class="text-xl text-slate-400">Saurez-vous détecter l'humain ?</p>
+                <div class="mb-4"><span class="text-red-500 font-mono text-sm font-bold uppercase tracking-[0.3em]">Mise en situation réelle</span></div>
+                <h2 class="text-5xl font-black font-heading uppercase">#1 ALERTE DEEPFAKE</h2>
+                <p class="text-xl text-slate-400 italic">Saurez-vous détecter l'humain dans un monde dominé par l'IA ?</p>
                 <div class="grid grid-cols-2 gap-6">
                     <div onclick="revealDeepfake('A')" class="cursor-pointer border-4 border-transparent hover:border-cyan-500 rounded-3xl overflow-hidden transition-all"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" class="h-64 w-full object-cover"></div>
                     <div onclick="revealDeepfake('B')" class="cursor-pointer border-4 border-transparent hover:border-red-500 rounded-3xl overflow-hidden transition-all"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400" class="h-64 w-full object-cover"></div>
@@ -171,7 +176,7 @@
                     <span class="px-4 py-2 glass rounded-lg text-yellow-400 text-lg md:text-2xl">TACHE</span>
                 </div>
             </div>`,
-            // 10 Pourquoi Coder (CORRECTED)
+            // 10 
             `<div class="text-center space-y-12 max-w-5xl mx-auto">
                 <h2 class="text-5xl font-black font-heading uppercase">Pourquoi Coder ?</h2>
                 <div class="grid grid-cols-3 gap-10">
@@ -214,6 +219,8 @@
                 </div>
             </div>`,
             // 13
+            `<div id="defense-game-hook" class="w-full h-full flex flex-col items-center justify-center"></div>`,
+            // 14
             `<div class="text-center space-y-12 max-w-7xl mx-auto">
                 <h2 class="text-6xl font-black font-heading">SOUVERAINETÉ</h2>
                 <div class="grid grid-cols-3 gap-8 text-left max-w-5xl mx-auto">
@@ -222,7 +229,9 @@
                     <div class="p-8 glass rounded-2xl"><p class="font-black text-yellow-400 mb-2">03. ÉCONOMIE</p><p class="text-xs">Géants tech européens (Mistral AI).</p></div>
                 </div>
             </div>`,
-            // 14
+            // 15 NEW: GROUP SCAN GAME
+            `<div id="group-game-hook" class="w-full h-full flex flex-col items-center justify-center"></div>`,
+            // 16
             `<div class="text-center space-y-12 max-w-7xl mx-auto">
                 <h2 class="text-5xl font-black font-heading">#3 COMBIEN ?</h2>
                 <p class="text-xl text-slate-400">Salaire mensuel (Junior) :</p>
@@ -233,7 +242,7 @@
                     <div onclick="showSalary('4500€')" class="p-8 glass rounded-3xl cursor-pointer hover:border-purple-500"><i data-lucide="cpu" class="mx-auto mb-4 text-purple-400"></i>IA</div>
                 </div>
             </div>`,
-            // 15
+            // 17
             `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
                 <div class="space-y-6">
                     <h2 class="text-5xl font-black font-heading text-emerald-500 uppercase">Pollution</h2>
@@ -245,7 +254,7 @@
                 </div>
                 <div class="bg-emerald-500/5 p-12 rounded-[5rem] text-center border border-emerald-500/20"><i data-lucide="leaf" class="w-64 h-64 text-emerald-900 animate-pulse mx-auto"></i></div>
             </div>`,
-            // 16
+            // 18
             `<div class="text-center space-y-12 max-w-7xl mx-auto">
                 <h2 class="text-5xl font-black font-heading uppercase">#5 Ton Projet</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -266,7 +275,7 @@
                     </div>
                 </div>
             </div>`,
-            // 17
+            // 19
             `<div class="text-center space-y-12 max-w-7xl mx-auto">
                 <h2 class="text-5xl font-black font-heading uppercase tracking-tighter">Qui a le dernier mot ?</h2>
                 <div class="grid grid-cols-2 gap-8 h-[40vh]">
@@ -274,34 +283,34 @@
                     <div class="p-10 glass rounded-[3rem] border-cyan-500/30 flex flex-col justify-center shadow-2xl"><h3 class="text-4xl font-black text-white">VOUS</h3><p class="text-xl font-bold">Créativité et Éthique.</p></div>
                 </div>
             </div>`,
-            // 18 Hangman
+            // 20 Hangman
             `<div id="hangman-hook"></div>`,
-            // 19 Evolution (FIXED: Wider + Balanced fonts)
+            // 21 Evolution
             `<div class="text-center space-y-12 w-full max-w-[98%] mx-auto">
                 <h2 class="text-5xl font-black font-heading uppercase tracking-tight">Apprendre à évoluer</h2>
-                <div class="grid grid-cols-3 gap-8 mt-12 px-2">
+                <div class="grid grid-cols-3 gap-6 mt-12 px-2">
                     <div class="flip-card s19-card" onclick="this.classList.toggle('flipped')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-5xl md:text-6xl font-black text-cyan-500">2024</div>
-                            <div class="flip-card-back bg-cyan-flip p-6"><h4 class="text-2xl md:text-3xl font-black mb-4 uppercase">Python</h4><p class="text-base md:text-lg font-bold leading-tight">Maîtriser les bases de la logique algorithmique et des données.</p></div>
+                            <div class="flip-card-back bg-cyan-flip p-4"><h4 class="text-lg md:text-xl font-black mb-3 uppercase break-words">Python</h4><p class="text-xs md:text-sm font-bold leading-relaxed break-words">Maîtriser les bases de la logique algorithmique et les structures de données fondamentales.</p></div>
                         </div>
                     </div>
                     <div class="flip-card s19-card" onclick="this.classList.toggle('flipped')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-5xl md:text-6xl font-black text-emerald-500">2026</div>
-                            <div class="flip-card-back bg-emerald-flip p-6"><h4 class="text-2xl md:text-3xl font-black mb-4 uppercase">Prompting</h4><p class="text-base md:text-lg font-bold leading-tight">Piloter les modèles de langage pour décupler sa productivité.</p></div>
+                            <div class="flip-card-back bg-emerald-flip p-4"><h4 class="text-lg md:text-xl font-black mb-3 uppercase break-words">Prompting</h4><p class="text-xs md:text-sm font-bold leading-relaxed break-words">Savoir piloter les modèles de langage pour décupler sa productivité et architecturer des solutions.</p></div>
                         </div>
                     </div>
                     <div class="flip-card s19-card" onclick="this.classList.toggle('flipped')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-5xl md:text-6xl font-black text-purple-500">2028</div>
-                            <div class="flip-card-back bg-purple-flip p-6"><h4 class="text-2xl md:text-3xl font-black mb-4 uppercase">Agentic AI</h4><p class="text-base md:text-lg font-bold leading-tight">Orchestrer des flottes d'agents autonomes complexes.</p></div>
+                            <div class="flip-card-back bg-purple-flip p-4"><h4 class="text-lg md:text-xl font-black mb-3 uppercase break-words">Agentic AI</h4><p class="text-xs md:text-sm font-bold leading-relaxed break-words">Orchestrer des flottes d'agents IA autonomes capables de résoudre des problèmes métier.</p></div>
                         </div>
                     </div>
                 </div>
                 <p class="text-xl text-slate-400 italic mt-8">Le métier change, votre passion reste la boussole.</p>
             </div>`,
-            // 20
+            // 22
             `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
                 <div class="space-y-6">
                     <h2 class="text-6xl font-black font-heading leading-tight uppercase">Le BTS SIO est votre <span class="text-cyan-400">COCKPIT</span></h2>
@@ -309,17 +318,17 @@
                 </div>
                 <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" class="rounded-[4rem] h-[450px] object-cover border border-white/5">
             </div>`,
-            // 21
+            // 23
             `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
                 <div class="space-y-6"><h2 class="text-6xl font-black text-cyan-400 uppercase">MISSION SISR</h2><p class="text-2xl text-slate-300 italic">"Gérer le Cloud mondial."</p></div>
                 <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] h-[450px] object-cover">
             </div>`,
-            // 22
+            // 24
             `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
                 <img src="https://images.unsplash.com/photo-1555099962-41d06ee9360c?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] h-[450px] object-cover">
                 <div class="space-y-6"><h2 class="text-6xl font-black text-emerald-400 uppercase">MISSION SLAM</h2><p class="text-2xl text-slate-300 italic">"Coder l'IA de demain."</p></div>
             </div>`,
-            // 23
+            // 25
             `<div class="text-center space-y-16 max-w-7xl mx-auto">
                 <h2 class="text-5xl font-black font-heading uppercase">Emploi</h2>
                 <div class="grid md:grid-cols-3 gap-10 items-baseline">
@@ -328,9 +337,9 @@
                     <div class="group"><div class="text-[6rem] font-black text-yellow-500 leading-none mb-4">+200k</h4><h4 class="text-lg font-bold text-slate-500 uppercase">Offres</h4></div>
                 </div>
             </div>`,
-            // 24
+            // 26
             `<div id="quiz-hook"></div>`,
-            // 25
+            // 27
             `<div class="text-center max-w-6xl mx-auto scale-[0.85]">
                 <h2 class="text-[6rem] font-black font-heading text-cyan-400 italic mb-8 uppercase">Prêt à coder ?</h2>
                 <div class="p-12 glass rounded-[4rem] flex flex-col md:flex-row items-center justify-center gap-12">
@@ -366,6 +375,7 @@
         }
 
         function update() {
+            defenseGameActive = false;
             const container = document.getElementById('container');
             container.innerHTML = `<div class="slide active">${slides[current]}</div>`;
             document.getElementById('counter').innerText = `${String(current + 1).padStart(2, '0')} / ${slides.length}`;
@@ -378,9 +388,182 @@
                 p.appendChild(step);
             });
 
-            if (current === 17) initHangman();
-            if (current === 23) initQuiz();
+            if (current === 12) initDefenseGame();
+            if (current === 14) initGroupGame();
+            if (current === 19) initHangman();
+            if (current === 25) initQuiz();
             lucide.createIcons();
+        }
+
+        // --- CYBER DEFENSE GAME LOGIC ---
+        function initDefenseGame() {
+            const hook = document.getElementById('defense-game-hook');
+            defenseGameActive = true;
+            let gameScore = 0;
+            let timeLeft = 15;
+            let currentThreat = null;
+            const threats = [
+                { text: "INTRUSION RÉSEAU", type: "SISR", color: "text-cyan-500" },
+                { text: "FAILLE SQL", type: "SLAM", color: "text-emerald-500" },
+                { text: "BRUTE FORCE SSH", type: "SISR", color: "text-cyan-500" },
+                { text: "XSS INJECTION", type: "SLAM", color: "text-emerald-500" },
+                { text: "DDOS ATTACK", type: "SISR", color: "text-cyan-500" },
+                { text: "API OVERFLOW", type: "SLAM", color: "text-emerald-500" }
+            ];
+
+            hook.innerHTML = `
+                <div id="game-container" class="space-y-8 text-center max-w-4xl p-12 glass rounded-[3rem] border-2 border-white/5 transition-all">
+                    <h2 id="game-title" class="text-4xl font-black uppercase tracking-widest text-red-500 animate-pulse">ALERTE SYSTÈME</h2>
+                    <div class="flex justify-between items-center px-10 font-mono text-2xl">
+                        <div>TEMP : <span id="timer" class="text-white">${timeLeft}s</span></div>
+                        <div>STABILITÉ : <span id="game-score" class="text-cyan-400">${gameScore}%</span></div>
+                    </div>
+                    <div id="threat-box" class="h-40 flex flex-col items-center justify-center bg-black/40 rounded-2xl border border-white/10 relative overflow-hidden">
+                        <div id="threat-display" class="text-3xl font-black transition-all transform scale-125">PRÊT ?</div>
+                    </div>
+                    <div id="game-controls" class="grid grid-cols-2 gap-8">
+                        <button id="btn-sisr" class="p-8 bg-cyan-600/20 border-2 border-cyan-500 rounded-2xl font-black text-xl hover:bg-cyan-500 hover:text-black transition-all">SISR : FIREWALL</button>
+                        <button id="btn-slam" class="p-8 bg-emerald-600/20 border-2 border-emerald-500 rounded-2xl font-black text-xl hover:bg-emerald-500 hover:text-black transition-all">SLAM : PATCH CODE</button>
+                    </div>
+                    <p id="game-hint" class="text-slate-500 italic">Réagissez à la menace avec la bonne option !</p>
+                </div>
+            `;
+            const timerEl = document.getElementById('timer');
+            const scoreEl = document.getElementById('game-score');
+            const threatEl = document.getElementById('threat-display');
+            const gameBox = document.getElementById('game-container');
+            const controls = document.getElementById('game-controls');
+            const title = document.getElementById('game-title');
+            const hint = document.getElementById('game-hint');
+
+            function spawnThreat() {
+                if(!defenseGameActive) return;
+                currentThreat = threats[Math.floor(Math.random() * threats.length)];
+                threatEl.innerText = currentThreat.text;
+                threatEl.className = `text-4xl font-black transition-all transform scale-110 ${currentThreat.color}`;
+            }
+
+            function handleDefend(type) {
+                if(!defenseGameActive || timeLeft <= 0) return;
+                if(currentThreat && currentThreat.type === type) {
+                    gameScore += 10;
+                    scoreEl.innerText = gameScore + "%";
+                    gameBox.classList.remove('glitch-effect');
+                    spawnThreat();
+                } else {
+                    gameBox.classList.add('glitch-effect');
+                    setTimeout(() => gameBox.classList.remove('glitch-effect'), 200);
+                }
+            }
+
+            document.getElementById('btn-sisr').onclick = () => handleDefend("SISR");
+            document.getElementById('btn-slam').onclick = () => handleDefend("SLAM");
+
+            const interval = setInterval(() => {
+                if(!defenseGameActive) { clearInterval(interval); return; }
+                timeLeft--;
+                timerEl.innerText = timeLeft + "s";
+                if(timeLeft <= 0) {
+                    clearInterval(interval);
+                    defenseGameActive = false;
+                    title.innerText = "MISSION ACCOMPLIE";
+                    title.className = "text-4xl font-black uppercase tracking-widest text-emerald-500";
+                    threatEl.innerText = "SYSTÈME STABILISÉ";
+                    threatEl.className = "text-4xl font-black text-white uppercase";
+                    hint.innerText = "Le système est sécurisé. Vous pouvez maintenant poursuivre.";
+                    controls.innerHTML = `<button onclick="next()" class="col-span-2 py-8 cyber-gradient text-slate-950 font-black rounded-2xl text-2xl hover:scale-105 transition-all shadow-xl uppercase">Continuer la visite</button>`;
+                }
+            }, 1000);
+            spawnThreat();
+        }
+
+        // --- GROUP SCAN GAME LOGIC ---
+        function initGroupGame() {
+            const hook = document.getElementById('group-game-hook');
+            const statements = [
+                { text: "En 2030, 90% des contenus sur internet seront générés par une IA.", isTrue: true, explanation: "Prévision d'Europol. Le défi sera de vérifier l'authenticité." },
+                { text: "Une IA est capable de ressentir de la tristesse ou de la joie.", isTrue: false, explanation: "L'IA simule des émotions, mais n'en ressent aucune physiquement." },
+                { text: "On peut stocker toutes les données du monde dans de l'ADN.", isTrue: true, explanation: "C'est le stockage le plus dense connu. Spécialité émergente du SISR." },
+                { text: "Le métier de développeur aura disparu en 2030 à cause de l'IA.", isTrue: false, explanation: "Il évolue vers le pilotage d'IA, mais l'humain reste décisionnaire." },
+                { text: "L'IA consomme plus d'eau que d'électricité pour se refroidir.", isTrue: true, explanation: "L'entraînement de GPT-4 a consommé des millions de litres d'eau potable." }
+            ];
+
+            function renderGroupStep() {
+                const s = statements[gStep];
+                hook.innerHTML = `
+                    <div class="text-center space-y-12 max-w-5xl mx-auto p-12 glass rounded-[4rem] border border-white/10 shadow-2xl relative overflow-hidden">
+                        <div class="flex items-center justify-center gap-3 text-cyan-400 font-black uppercase tracking-widest mb-4">
+                            <i data-lucide="hand" class="animate-bounce"></i> <span>Scan Collectif</span>
+                        </div>
+                        <h2 class="text-3xl md:text-4xl font-light text-slate-400 leading-tight">
+                            Levez la main si c'est <span class="text-emerald-400 font-black">VRAI</span>, restez bas si c'est <span className="text-red-500 font-black">FAUX</span>.
+                        </h2>
+                        
+                        <div id="scan-view" class="space-y-10 min-h-[300px] flex flex-col justify-center">
+                            <h3 class="text-4xl md:text-5xl font-black italic">"${s.text}"</h3>
+                            <button id="start-scan-btn" class="px-16 py-8 cyber-gradient text-slate-950 rounded-[2rem] text-3xl font-black hover:scale-110 transition-transform mx-auto">LANCER LE SCAN (5s)</button>
+                        </div>
+
+                        <div class="text-slate-500 font-mono text-xl pt-8 border-t border-white/5">
+                            Affirmation ${gStep + 1} / ${statements.length}
+                        </div>
+                    </div>
+                `;
+                lucide.createIcons();
+
+                document.getElementById('start-scan-btn').onclick = () => {
+                    let timer = 5;
+                    const scanView = document.getElementById('scan-view');
+                    scanView.innerHTML = `
+                        <div class="space-y-10 animate-pulse">
+                            <h3 class="text-4xl font-black text-slate-500 uppercase">Prenez position !</h3>
+                            <div id="scan-timer" class="text-[12rem] font-black leading-none text-white">5</div>
+                            <div class="scan-progress"><div id="scan-bar" class="scan-bar"></div></div>
+                        </div>
+                    `;
+                    const bar = document.getElementById('scan-bar');
+                    const timerEl = document.getElementById('scan-timer');
+                    
+                    const interval = setInterval(() => {
+                        timer--;
+                        timerEl.innerText = timer;
+                        bar.style.width = (timer/5)*100 + "%";
+                        if(timer <= 0) {
+                            clearInterval(interval);
+                            revealResult();
+                        }
+                    }, 1000);
+                };
+            }
+
+            function revealResult() {
+                const s = statements[gStep];
+                const scanView = document.getElementById('scan-view');
+                scanView.innerHTML = `
+                    <div class="space-y-8 animate-in slide-in-from-bottom duration-500">
+                        <div class="flex flex-col items-center">
+                            <i data-lucide="${s.isTrue ? 'check-circle' : 'x-circle'}" class="w-24 h-24 ${s.isTrue ? 'text-emerald-500' : 'text-red-500'} mb-4"></i>
+                            <span class="text-6xl font-black ${s.isTrue ? 'text-emerald-500' : 'text-red-500'} uppercase">${s.isTrue ? 'VRAI !' : 'FAUX !'}</span>
+                        </div>
+                        <p class="text-2xl text-slate-300 font-light max-w-3xl mx-auto italic">${s.explanation}</p>
+                        <button id="next-scan-btn" class="flex items-center gap-3 mx-auto mt-8 text-cyan-400 hover:text-white transition-colors text-xl font-bold uppercase tracking-widest">
+                            ${gStep < statements.length - 1 ? 'Question Suivante' : 'Terminer le jeu'} <i data-lucide="chevron-right"></i>
+                        </button>
+                    </div>
+                `;
+                lucide.createIcons();
+                document.getElementById('next-scan-btn').onclick = () => {
+                    if(gStep < statements.length - 1) {
+                        gStep++;
+                        renderGroupStep();
+                    } else {
+                        gStep = 0; // reset for next time
+                        next();
+                    }
+                };
+            }
+
+            renderGroupStep();
         }
 
         function next() { if(current < slides.length - 1) { current++; update(); } }

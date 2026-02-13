@@ -8,10 +8,8 @@ import {
   CheckCircle2,
   QrCode,
   ArrowRight,
-  HelpCircle,
   Eye,
   Cpu,
-  Zap,
   Sparkles,
   Globe,
   ShieldAlert,
@@ -19,15 +17,18 @@ import {
   Smartphone,
   Gamepad,
   HeartPulse,
-  Briefcase
+  Briefcase,
+  Rocket,
+  Shield
 } from 'lucide-react';
 import { SlideWrapper } from './components/SlideWrapper';
 import { Quiz } from './components/Quiz';
 import { Hangman } from './components/Hangman';
+import { GroupGame } from './components/GroupGame';
 
 const App: React.FC = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const totalSlides = 25;
+  const totalSlides = 23;
 
   const nextSlide = useCallback(() => {
     setCurrentSlide((prev) => Math.min(prev + 1, totalSlides - 1));
@@ -70,7 +71,7 @@ const App: React.FC = () => {
       <div className="space-y-10">
         <div className="bg-cyan-500/20 p-6 rounded-3xl w-fit"><ShieldCheck className="w-16 h-16 text-cyan-400" /></div>
         <h2 className="text-6xl font-black font-heading uppercase leading-none">SISR</h2>
-        <h3 className="text-3xl text-cyan-400 font-bold uppercase tracking-tight">Solutions d'Infrastructure, Systèmes et Réseaux</h3>
+        <h3 className="text-3xl text-cyan-400 font-bold uppercase tracking-tight">Infrastructure, Systèmes et Réseaux</h3>
         <p className="text-2xl text-slate-400 leading-relaxed italic">"Le Cloud, la Cyber-sécurité et les Réseaux n'auront plus de secrets pour vous."</p>
       </div>
       <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=800" className="rounded-[3rem] border border-white/10 shadow-2xl h-[500px] object-cover" />
@@ -206,7 +207,7 @@ const App: React.FC = () => {
       <div className="text-center"><ShieldAlert className="w-72 h-72 text-red-900 mx-auto opacity-30 animate-pulse" /></div>
       <div className="space-y-10 p-16 border-2 border-red-500/20 bg-red-500/5 rounded-[4rem]">
         <h2 className="text-7xl font-black text-red-500 uppercase tracking-tighter">DARK IA</h2>
-        <p className="text-3xl text-slate-300">Virus auto-adaptatifs... Le technicien SISR est le rempart.</p>
+        <p className="text-3xl text-slate-300">Virus mutants et phishing indétectable : la menace à stopper.</p>
       </div>
     </div>,
 
@@ -220,9 +221,14 @@ const App: React.FC = () => {
       <p className="text-4xl text-slate-400 font-light">Bâtir l'indépendance de l'Europe.</p>
     </div>,
 
-    // 14. Interaction 3: Smartphone
+    // 14. LE JEU DU SCAN
+    <div key="groupgame" className="h-full">
+      <GroupGame />
+    </div>,
+
+    // 15. Salaire
     <div key="s13" className="text-center space-y-16 max-w-7xl mx-auto">
-      <h2 className="text-7xl font-black font-heading uppercase tracking-tighter">Interaction #3 : Salaire</h2>
+      <h2 className="text-7xl font-black font-heading uppercase tracking-tighter">Salaire Junior 2030</h2>
       <p className="text-3xl text-slate-400">Cliquez pour voir votre futur salaire mensuel :</p>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
         <div className="p-12 bg-white/5 rounded-[3.5rem] cursor-pointer hover:border-cyan-500 border border-white/5" onClick={() => alert('Expert Cyber : 5500€ / mois')}>
@@ -244,7 +250,7 @@ const App: React.FC = () => {
       </div>
     </div>,
 
-    // 15. Interaction 4: Pollution
+    // 16. Pollution
     <div key="s14" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
       <div className="space-y-12">
         <h2 className="text-7xl font-black font-heading uppercase tracking-tighter text-emerald-500 italic">Pollution Invisible</h2>
@@ -259,38 +265,20 @@ const App: React.FC = () => {
       </div>
     </div>,
 
-    // 16. Interaction 5: App Dream
-    <div key="s15" className="text-center max-w-7xl mx-auto space-y-16">
-      <h2 className="text-7xl font-black font-heading uppercase tracking-tighter">Interaction #5 : Ton Projet</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        <div className="p-12 bg-white/5 rounded-[4rem] cursor-pointer hover:border-red-500 border border-white/5" onClick={() => alert('SLAM ! IA Santé.')}>
-          <HeartPulse className="w-20 h-20 mb-8 text-red-500 mx-auto" />
-          <h4 className="font-black text-3xl mb-4 uppercase">SANTE IA</h4>
-        </div>
-        <div className="p-12 bg-white/5 rounded-[4rem] cursor-pointer hover:border-cyan-500 border border-white/5" onClick={() => alert('SISR ! Gaming mondial.')}>
-          <Gamepad className="w-20 h-20 mb-8 text-cyan-400 mx-auto" />
-          <h4 className="font-black text-3xl mb-4 uppercase">CLOUD GAMING</h4>
-        </div>
-        <div className="p-12 bg-white/5 rounded-[4rem] cursor-pointer hover:border-yellow-500 border border-white/5" onClick={() => alert('Mixte ! Finance.')}>
-          <Briefcase className="w-20 h-20 mb-8 text-yellow-500 mx-auto" />
-          <h4 className="font-black text-3xl mb-4 uppercase">FINTECH 2.0</h4>
-        </div>
-      </div>
-    </div>,
-
     // 17. Créativité vs Algorithme
     <div key="s16" className="grid grid-cols-2 gap-12 max-w-7xl mx-auto h-[60vh]">
       <div className="p-16 bg-white/5 rounded-[4rem] flex flex-col justify-center text-center opacity-60">
         <h3 className="text-5xl font-black text-slate-500 uppercase">L'IA</h3>
         <p className="text-3xl font-light">Vitesse, Routine, Calcul.</p>
       </div>
-      <div className="p-16 bg-white/10 rounded-[4rem] border border-cyan-500/30 flex flex-col justify-center text-center">
+      <div className="p-16 bg-white/10 rounded-[4rem] border border-cyan-500/30 flex flex-col justify-center text-center shadow-[0_0_50px_rgba(6,182,212,0.1)]">
         <h3 className="text-5xl font-black text-white uppercase">VOUS</h3>
-        <p className="text-3xl font-bold">Créativité, Éthique, Empathie.</p>
+        <p className="text-3xl font-bold mb-6">Créativité, Éthique, Empathie.</p>
+        <p className="text-xl text-cyan-400 font-black italic">"L'IA est un miroir du passé, vous êtes le moteur du futur."</p>
       </div>
     </div>,
 
-    // 18. Hangman
+    // 18. Hangman (Developed)
     <div key="hangman" className="h-full">
        <Hangman />
     </div>,
@@ -303,7 +291,7 @@ const App: React.FC = () => {
         <div className="flex-1 h-1 bg-slate-800 mx-10"></div>
         <div className="flex flex-col items-center"><div className="w-8 h-8 bg-emerald-500 rounded-full mb-4"></div><span className="text-sm uppercase font-black">2026: Prompting</span></div>
         <div className="flex-1 h-1 bg-slate-800 mx-10"></div>
-        <div className="flex flex-col items-center"><div className="w-8 h-8 bg-yellow-500 rounded-full mb-4"></div><span className="text-sm uppercase font-black">2028: Quantum</span></div>
+        <div className="flex flex-col items-center"><div className="w-8 h-8 bg-yellow-500 rounded-full mb-4"></div><span className="text-sm uppercase font-black">2028: Agentic AI</span></div>
       </div>
     </div>,
 
@@ -313,40 +301,32 @@ const App: React.FC = () => {
       <p className="text-4xl text-slate-500 font-light italic">Soyez son pilote.</p>
     </div>,
 
-    // 21. Mission SISR
-    <div key="s19" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
-      <div className="space-y-12 text-left">
-        <h2 className="text-6xl font-black uppercase tracking-tighter text-cyan-400">Mission SISR</h2>
-        <p className="text-3xl text-slate-300 italic">"Infrastructure Cloud F1."</p>
-      </div>
-      <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=1000" className="rounded-[4rem] h-[550px] object-cover" />
-    </div>,
-
-    // 22. Mission SLAM
-    <div key="s20" className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center h-full">
-      <img src="https://images.unsplash.com/photo-1555099962-41d06ee9360c?auto=format&fit=crop&q=80&w=1000" className="rounded-[4rem] h-[550px] object-cover" />
-      <div className="space-y-12 text-left">
-        <h2 className="text-6xl font-black uppercase tracking-tighter text-emerald-400">Mission SLAM</h2>
-        <p className="text-3xl text-slate-300 italic">"Traduction instantanée IA."</p>
-      </div>
-    </div>,
-
-    // 23. Chiffres Géants
-    <div key="s21" className="text-center space-y-24">
-      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">Secteur porteur</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-16 max-w-7xl mx-auto">
-        <div className="group"><div className="text-[12rem] font-black text-cyan-500 mb-0 tracking-tighter transition-transform group-hover:scale-110">38K</div><h4 className="text-3xl font-bold text-slate-500 uppercase">Salaire (€)</h4></div>
-        <div className="group"><div className="text-[12rem] font-black text-emerald-500 mb-0 tracking-tighter transition-transform group-hover:scale-110">98%</div><h4 className="text-3xl font-bold text-slate-500 uppercase">Embauche</h4></div>
-        <div className="group"><div className="text-[12rem] font-black text-yellow-500 mb-0 tracking-tighter transition-transform group-hover:scale-110">+200k</h4><h4 className="text-3xl font-bold text-slate-500 uppercase">Offres / an</h4></div>
-      </div>
-    </div>,
-
-    // 24. Quiz Final
+    // 21. Quiz Final
     <div key="quiz" className="h-full">
       <Quiz />
     </div>,
 
-    // 25. Conclusion
+    // 22. GRAND BILAN (Fusionné)
+    <div key="s_bilan" className="flex flex-col justify-center h-full max-w-7xl mx-auto space-y-16">
+      <h2 className="text-6xl font-black font-heading text-center uppercase">VOTRE AVENIR EN CHIFFRES & MISSIONS</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="p-10 glass rounded-[3rem] border-cyan-500/20 space-y-6">
+          <div className="flex items-center gap-4"><Shield className="text-cyan-400 w-10 h-10" /><h3 className="text-3xl font-black uppercase">Mission SISR</h3></div>
+          <p className="text-xl text-slate-400 italic">Gérer les infrastructures Cloud de Formule 1 et sécuriser les échanges mondiaux.</p>
+        </div>
+        <div className="p-10 glass rounded-[3rem] border-emerald-500/20 space-y-6">
+          <div className="flex items-center gap-4"><Rocket className="text-emerald-400 w-10 h-10" /><h3 className="text-3xl font-black uppercase">Mission SLAM</h3></div>
+          <p className="text-xl text-slate-400 italic">Coder l'IA de traduction instantanée et architecturer les applications du Web Spatial.</p>
+        </div>
+      </div>
+      <div className="grid grid-cols-3 gap-10 text-center bg-white/5 p-12 rounded-[4rem] border border-white/5">
+        <div><div className="text-7xl font-black text-cyan-400 mb-2 leading-none">38K</div><p className="uppercase font-bold text-slate-500">Salaire (€)</p></div>
+        <div><div className="text-7xl font-black text-emerald-400 mb-2 leading-none">98%</div><p className="uppercase font-bold text-slate-500">Embauche</p></div>
+        <div><div className="text-7xl font-black text-yellow-400 mb-2 leading-none">+200k</div><p className="uppercase font-bold text-slate-500">Offres / an</p></div>
+      </div>
+    </div>,
+
+    // 23. Conclusion
     <div key="s22" className="text-center max-w-7xl mx-auto space-y-20">
       <h2 className="text-[10rem] font-black font-heading italic tracking-tighter text-cyan-400">PRÊT ?</h2>
       <div className="p-20 bg-white/5 rounded-[5rem] flex flex-col md:flex-row items-center justify-center gap-24 border border-white/10">
