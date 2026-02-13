@@ -19,7 +19,6 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         .grid-bg { position: absolute; inset: 0; background-image: radial-gradient(rgba(6,182,212,0.1) 1px, transparent 0); background-size: 40px 40px; z-index: -1; }
         
-        /* Flip Cards Styles */
         .flip-card { background-color: transparent; perspective: 1000px; cursor: pointer; width: 100%; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
@@ -32,15 +31,11 @@
         .bg-purple-flip { background: #a855f7; }
         .bg-yellow-flip { background: #eab308; }
 
-        /* Consistent heights for broad cards */
         .s10-card, .s19-card { height: 380px; }
         .s10-card .flip-card-front { font-size: 8rem; font-weight: 900; }
         
         @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
         .glitch-effect { animation: glitch 0.2s infinite; border-color: #ef4444 !important; }
-        
-        .scan-progress { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; overflow: hidden; width: 100%; }
-        .scan-bar { height: 100%; background: var(--accent); width: 100%; transition: width 1s linear; }
     </style>
 <script type="importmap">
 {
@@ -176,7 +171,7 @@
                     <span class="px-4 py-2 glass rounded-lg text-yellow-400 text-lg md:text-2xl">TACHE</span>
                 </div>
             </div>`,
-            // 10 - POURQUOI CODER (IDENTIQUE DIAPO 21)
+            // 10 - POURQUOI CODER
             `<div class="text-center space-y-12 w-full max-w-[98%] mx-auto">
                 <h2 class="text-6xl font-black font-heading uppercase tracking-tighter">Pourquoi Coder ?</h2>
                 <div class="grid grid-cols-3 gap-6 mt-12 px-2">
@@ -319,25 +314,40 @@
                 </div>
                 <p class="text-xl text-slate-400 italic mt-8">Le métier change, votre passion reste la boussole.</p>
             </div>`,
-            // 22
-            `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-                <div class="space-y-6">
-                    <h2 class="text-6xl font-black font-heading leading-tight uppercase">Le BTS SIO est votre <span class="text-cyan-400">COCKPIT</span></h2>
-                    <p class="text-2xl text-slate-500 italic">Soyez son pilote.</p>
+            // 22 - COCKPIT DES MISSIONS (FUSIONNÉ)
+            `<div class="text-center space-y-12 w-full max-w-[98%] mx-auto px-6">
+                <h2 class="text-6xl font-black font-heading uppercase leading-tight tracking-tighter">Votre <span class="text-cyan-400">COCKPIT</span> : Les Missions</h2>
+                <div class="grid grid-cols-2 gap-10 mt-8">
+                    <!-- SISR Mission Box -->
+                    <div class="p-10 glass rounded-[4rem] border-cyan-500/20 text-left flex flex-col gap-6 relative overflow-hidden group hover:bg-cyan-500/5 transition-all">
+                        <div class="flex items-center gap-6">
+                            <div class="p-4 bg-cyan-500/20 rounded-2xl"><i data-lucide="shield" class="w-10 h-10 text-cyan-400"></i></div>
+                            <h3 class="text-4xl font-black text-cyan-400 uppercase">Mission SISR</h3>
+                        </div>
+                        <p class="text-xl text-slate-300 italic font-light">"Gérer les infrastructures Cloud mondiales et sécuriser les réseaux critiques."</p>
+                        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=600" class="rounded-3xl h-48 object-cover border border-white/5 opacity-70 group-hover:opacity-100 transition-opacity">
+                        <div class="flex gap-4">
+                            <span class="px-4 py-2 bg-white/5 rounded-full text-xs font-mono">Cyber-Défense</span>
+                            <span class="px-4 py-2 bg-white/5 rounded-full text-xs font-mono">Cloud Ops</span>
+                        </div>
+                    </div>
+                    <!-- SLAM Mission Box -->
+                    <div class="p-10 glass rounded-[4rem] border-emerald-500/20 text-left flex flex-col gap-6 relative overflow-hidden group hover:bg-emerald-500/5 transition-all">
+                        <div class="flex items-center gap-6">
+                            <div class="p-4 bg-emerald-500/20 rounded-2xl"><i data-lucide="rocket" class="w-10 h-10 text-emerald-400"></i></div>
+                            <h3 class="text-4xl font-black text-emerald-400 uppercase">Mission SLAM</h3>
+                        </div>
+                        <p class="text-xl text-slate-300 italic font-light">"Coder les applications de demain et piloter les IA génératives."</p>
+                        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=600" class="rounded-3xl h-48 object-cover border border-white/5 opacity-70 group-hover:opacity-100 transition-opacity">
+                        <div class="flex gap-4">
+                            <span class="px-4 py-2 bg-white/5 rounded-full text-xs font-mono">IA Dev</span>
+                            <span class="px-4 py-2 bg-white/5 rounded-full text-xs font-mono">UX Spatial</span>
+                        </div>
+                    </div>
                 </div>
-                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=800" class="rounded-[4rem] h-[450px] object-cover border border-white/5">
+                <p class="text-slate-500 italic text-2xl mt-4">Le SIO vous forme à être le pilote de ces infrastructures.</p>
             </div>`,
-            // 23
-            `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-                <div class="space-y-6"><h2 class="text-6xl font-black text-cyan-400 uppercase">MISSION SISR</h2><p class="text-2xl text-slate-300 italic">"Gérer le Cloud mondial."</p></div>
-                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] h-[450px] object-cover">
-            </div>`,
-            // 24
-            `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
-                <img src="https://images.unsplash.com/photo-1555099962-41d06ee9360c?auto=format&fit=crop&q=80&w=800" class="rounded-[3rem] h-[450px] object-cover">
-                <div class="space-y-6"><h2 class="text-6xl font-black text-emerald-400 uppercase">MISSION SLAM</h2><p class="text-2xl text-slate-300 italic">"Coder l'IA de demain."</p></div>
-            </div>`,
-            // 25
+            // 23 - EMPLOI
             `<div class="text-center space-y-16 max-w-7xl mx-auto">
                 <h2 class="text-5xl font-black font-heading uppercase">Emploi</h2>
                 <div class="grid md:grid-cols-3 gap-10 items-baseline">
@@ -346,9 +356,9 @@
                     <div class="group"><div class="text-[6rem] font-black text-yellow-500 leading-none mb-4">+200k</h4><h4 class="text-lg font-bold text-slate-500 uppercase">Offres</h4></div>
                 </div>
             </div>`,
-            // 26
+            // 24 - QUIZ
             `<div id="quiz-hook" class="w-full"></div>`,
-            // 27
+            // 25 - CONCLUSION
             `<div class="text-center max-w-6xl mx-auto scale-[0.85]">
                 <h2 class="text-[6rem] font-black font-heading text-cyan-400 italic mb-8 uppercase">Prêt à coder ?</h2>
                 <div class="p-12 glass rounded-[4rem] flex flex-col md:flex-row items-center justify-center gap-12">
@@ -362,9 +372,10 @@
         ];
 
         function showSalary(val) {
+            const modal = document.getElementById('salary-modal');
             document.getElementById('salary-value').innerText = val;
-            document.getElementById('salary-modal').classList.remove('hidden');
-            document.getElementById('salary-modal').classList.add('flex');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
         }
 
         function revealDeepfake(option) {
@@ -384,7 +395,6 @@
             document.getElementById('reveal-' + id).style.pointerEvents = 'none';
         }
 
-        // --- CYBER DEFENSE GAME ---
         function initDefenseGame() {
             const hook = document.getElementById('defense-game-hook');
             defenseGameActive = true;
@@ -445,7 +455,6 @@
             spawnThreat();
         }
 
-        // --- GROUP SCAN GAME ---
         function initGroupGame() {
             const hook = document.getElementById('group-game-hook');
             const states = [
@@ -475,7 +484,6 @@
             render();
         }
 
-        // --- HANGMAN GAME (SLIDE 20) ---
         function initHangman() {
             const hook = document.getElementById('hangman-hook');
             const word = "ADAPTATION";
@@ -509,7 +517,6 @@
             });
         }
 
-        // --- QUIZ GAME ---
         function initQuiz() {
             const hook = document.getElementById('quiz-hook');
             const questions = [
@@ -553,7 +560,7 @@
             if (current === 12) initDefenseGame();
             if (current === 14) initGroupGame();
             if (current === 19) initHangman();
-            if (current === 25) initQuiz();
+            if (current === 23) initQuiz(); // Index ajusté après fusion
             lucide.createIcons();
         }
 
