@@ -23,18 +23,18 @@
         .flip-card { background-color: transparent; perspective: 1000px; cursor: pointer; width: 100%; }
         .flip-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s; transform-style: preserve-3d; }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
-        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.1); }
+        .flip-card-front, .flip-card-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; border-radius: 3rem; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(255, 255, 255, 0.1); }
         .flip-card-front { background: rgba(255, 255, 255, 0.03); z-index: 2; }
-        .flip-card-back { transform: rotateY(180deg); color: #020617; padding: 1rem; z-index: 1; }
+        .flip-card-back { transform: rotateY(180deg); color: #020617; padding: 2.5rem; z-index: 1; }
         .bg-cyan-flip { background: #06b6d4; }
         .bg-emerald-flip { background: #10b981; }
         .bg-purple-flip { background: #a855f7; }
         .bg-yellow-flip { background: #eab308; }
 
-        .s10-card { height: 320px; }
-        .s10-card .flip-card-front { font-size: 5rem; font-weight: 900; }
+        .s10-card { height: 420px; }
+        .s10-card .flip-card-front { font-size: 10rem; font-weight: 900; }
         .s19-card { height: 380px; }
-        .s19-card .flip-card-back { padding: 1rem; overflow: hidden; }
+        .s19-card .flip-card-back { padding: 1.5rem; overflow: hidden; }
 
         @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-5px, 5px); } 40% { transform: translate(-5px, -5px); } 60% { transform: translate(5px, 5px); } 80% { transform: translate(5px, -5px); } 100% { transform: translate(0); } }
         .glitch-effect { animation: glitch 0.2s infinite; border-color: #ef4444 !important; }
@@ -176,30 +176,39 @@
                     <span class="px-4 py-2 glass rounded-lg text-yellow-400 text-lg md:text-2xl">TACHE</span>
                 </div>
             </div>`,
-            // 10 
-            `<div class="text-center space-y-12 max-w-5xl mx-auto">
-                <h2 class="text-5xl font-black font-heading uppercase">Pourquoi Coder ?</h2>
-                <div class="grid grid-cols-3 gap-10">
+            // 10 - POURQUOI CODER (FIXED)
+            `<div class="text-center space-y-16 max-w-[95rem] mx-auto px-10">
+                <h2 class="text-7xl font-black font-heading uppercase mb-16 tracking-tighter">Pourquoi Coder ?</h2>
+                <div class="grid grid-cols-3 gap-16">
                     <div class="flip-card s10-card" onclick="this.classList.toggle('flipped')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-cyan-500">C</div>
-                            <div class="flip-card-back bg-cyan-flip"><h4 class="text-xl font-black mb-4 uppercase">Comprendre</h4><p class="text-sm font-bold leading-tight">Pour ne jamais être esclave de la boîte noire.</p></div>
+                            <div class="flip-card-back bg-cyan-flip">
+                                <h4 class="text-2xl font-black mb-6 uppercase tracking-widest">Comprendre</h4>
+                                <p class="text-xl font-bold leading-tight text-slate-900">Pour ne jamais être esclave de la boîte noire algorithmique.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="flip-card s10-card" onclick="this.classList.toggle('flipped')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-emerald-500">O</div>
-                            <div class="flip-card-back bg-emerald-flip"><h4 class="text-xl font-black mb-4 uppercase">Optimiser</h4><p class="text-sm font-bold leading-tight">Pour créer des outils qui consomment moins d'énergie.</p></div>
+                            <div class="flip-card-back bg-emerald-flip">
+                                <h4 class="text-2xl font-black mb-6 uppercase tracking-widest">Optimiser</h4>
+                                <p class="text-xl font-bold leading-tight text-slate-900">Pour créer des programmes économes en énergie et en ressources.</p>
+                            </div>
                         </div>
                     </div>
                     <div class="flip-card s10-card" onclick="this.classList.toggle('flipped')">
                         <div class="flip-card-inner">
                             <div class="flip-card-front text-yellow-500">I</div>
-                            <div class="flip-card-back bg-yellow-flip"><h4 class="text-xl font-black mb-4 uppercase">Innover</h4><p class="text-sm font-bold leading-tight">Pour coder l'IA qui n'existe pas encore.</p></div>
+                            <div class="flip-card-back bg-yellow-flip">
+                                <h4 class="text-2xl font-black mb-6 uppercase tracking-widest">Innover</h4>
+                                <p class="text-xl font-bold leading-tight text-slate-900">Pour inventer les solutions de demain qui n'existent pas encore.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <p class="text-slate-500 italic">Cliquez sur les lettres pour découvrir le sens</p>
+                <p class="text-slate-500 italic text-2xl mt-12">Cliquez sur les lettres pour découvrir le sens</p>
             </div>`,
             // 11
             `<div class="grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
@@ -229,7 +238,7 @@
                     <div class="p-8 glass rounded-2xl"><p class="font-black text-yellow-400 mb-2">03. ÉCONOMIE</p><p class="text-xs">Géants tech européens (Mistral AI).</p></div>
                 </div>
             </div>`,
-            // 15 NEW: GROUP SCAN GAME
+            // 15
             `<div id="group-game-hook" class="w-full h-full flex flex-col items-center justify-center"></div>`,
             // 16
             `<div class="text-center space-y-12 max-w-7xl mx-auto">

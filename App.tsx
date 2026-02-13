@@ -130,7 +130,7 @@ const App: React.FC = () => {
         <p className="text-2xl text-slate-400">Cliquez pour voir les étapes techniques SISR :</p>
         <div className="space-y-6">
           <button className="w-full p-8 bg-white/5 border border-white/10 rounded-3xl text-left hover:bg-white/10 transition-all" onClick={() => alert('1. Chiffrement SSL/TLS activé.')}>1. CHIFFREMENT MOBILE</button>
-          <button className="w-full p-8 bg-white/5 border border-white/10 rounded-3xl text-left hover:bg-white/10 transition-all" onClick={() => alert('2. Routage via fibre optique < 10ms.')}>2. ROUTAGE HAUTE VITESSE</button>
+          <button className="w-full p-8 bg-white/5 border border-white/10 rounded-3xl text-left hover:bg-white/10 transition-all" onClick={() => alert('2. ROUTAGE HAUTE VITESSE.')}>2. ROUTAGE HAUTE VITESSE</button>
         </div>
       </div>
       <div className="bg-slate-900 rounded-[4rem] h-[500px] flex items-center justify-center relative overflow-hidden">
@@ -168,21 +168,21 @@ const App: React.FC = () => {
       <p className="text-2xl text-slate-400 italic">Le "Prompting" est l'art de décomposer un problème complexe.</p>
     </div>,
 
-    // 10. Pourquoi coder?
-    <div key="s9" className="text-center max-w-7xl mx-auto space-y-20">
-      <h2 className="text-6xl font-black font-heading uppercase tracking-tighter">Pourquoi apprendre à coder ?</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-        <div className="p-12 bg-white/5 rounded-[3rem] border border-white/10 hover:border-cyan-500">
-          <h4 className="text-3xl font-black mb-6">COMPRENDRE</h4>
-          <p className="text-xl text-slate-400">Pour corriger l'IA quand elle a des "hallucinations".</p>
+    // 10. Pourquoi coder? (MASSIVELY WIDENED)
+    <div key="s9" className="text-center max-w-[95rem] mx-auto space-y-20 px-10">
+      <h2 className="text-7xl font-black font-heading uppercase tracking-tighter">Pourquoi apprendre à coder ?</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+        <div className="p-16 bg-white/5 rounded-[4rem] border border-white/10 hover:border-cyan-500 hover:bg-white/10 transition-all cursor-default">
+          <h4 className="text-3xl font-black text-cyan-400 mb-8 tracking-widest uppercase">Comprendre</h4>
+          <p className="text-2xl text-slate-400 leading-relaxed italic">Pour ne jamais être esclave de la boîte noire algorithmique.</p>
         </div>
-        <div className="p-12 bg-white/5 rounded-[3rem] border-white/10 hover:border-emerald-500">
-          <h4 className="text-3xl font-black mb-6">OPTIMISER</h4>
-          <p className="text-xl text-slate-400">Pour rendre les programmes économes en énergie.</p>
+        <div className="p-16 bg-white/5 rounded-[4rem] border border-white/10 hover:border-emerald-500 hover:bg-white/10 transition-all cursor-default">
+          <h4 className="text-3xl font-black text-emerald-400 mb-8 tracking-widest uppercase">Optimiser</h4>
+          <p className="text-2xl text-slate-400 leading-relaxed italic">Pour créer des programmes économes en énergie et en ressources.</p>
         </div>
-        <div className="p-12 bg-white/5 rounded-[3rem] border-white/10 hover:border-yellow-500">
-          <h4 className="text-3xl font-black mb-6">INNOVER</h4>
-          <p className="text-xl text-slate-400">Pour créer les IA de demain.</p>
+        <div className="p-16 bg-white/5 rounded-[4rem] border border-white/10 hover:border-yellow-500 hover:bg-white/10 transition-all cursor-default">
+          <h4 className="text-3xl font-black text-yellow-400 mb-8 tracking-widest uppercase">Innover</h4>
+          <p className="text-2xl text-slate-400 leading-relaxed italic">Pour inventer les solutions de demain qui n'existent pas encore.</p>
         </div>
       </div>
     </div>,
