@@ -56,6 +56,13 @@ export const Quiz: React.FC = () => {
         { label: "C'est mon objectif (SLAM)", score: 1 },
         { label: "Je préfère un système invisible mais vital (SISR)", score: -1 }
       ]
+    },
+    {
+      text: "Je suis plus attiré par la protection des données sensibles que par la création de nouvelles fonctionnalités.",
+      options: [
+        { label: "Pas vraiment, je veux créer (SLAM)", score: 1 },
+        { label: "Absolument, la sécurité d'abord (SISR)", score: -1 }
+      ]
     }
   ];
 
