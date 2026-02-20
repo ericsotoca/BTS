@@ -157,7 +157,7 @@ const App: React.FC = () => {
       <div className="font-mono bg-black p-12 rounded-[3rem] border border-white/10 text-cyan-400">
         <p className="opacity-50">// Prompt: API sécurisée...</p>
         <p className="animate-pulse">_ Generating routes...</p>
-        <p className="text-white mt-6 font-bold text-lg">> DONE in 0.4s</p>
+        <p className="text-white mt-6 font-bold text-lg">&gt; DONE in 0.4s</p>
       </div>
     </div>,
 

@@ -34,12 +34,37 @@ export const GroupGame: React.FC = () => {
       text: "L'IA consomme plus d'eau que d'électricité pour refroidir les serveurs.",
       isTrue: true,
       explanation: "L'entraînement de GPT-4 a nécessité des millions de litres d'eau potable."
+    },
+    {
+      text: "Le Cloud souverain européen vise à garantir l'indépendance technologique de l'UE.",
+      isTrue: true,
+      explanation: "Vrai. C'est un enjeu majeur de sécurité et de souveraineté numérique."
+    },
+    {
+      text: "En 2030, la cybersécurité sera intégrée nativement dans chaque ligne de code produite.",
+      isTrue: true,
+      explanation: "Vrai. Le 'Security by Design' devient la norme absolue."
+    },
+    {
+      text: "Le métier d'administrateur réseau va disparaître totalement avec le Cloud.",
+      isTrue: false,
+      explanation: "Faux. Il évolue vers l'administration de réseaux virtuels et hybrides."
+    },
+    {
+      text: "L'IA générative peut créer des applications entières sans aucune intervention humaine.",
+      isTrue: false,
+      explanation: "Faux. L'humain reste nécessaire pour l'architecture, la validation et l'éthique."
+    },
+    {
+      text: "Le BTS SIO propose deux spécialités : SISR et SLAM.",
+      isTrue: true,
+      explanation: "Vrai. Infrastructure/Réseaux (SISR) et Développement/Applications (SLAM)."
     }
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [phase, setPhase] = useState<'IDLE' | 'COUNTDOWN' | 'REVEAL'>('IDLE');
-  const [timeLeft, setTimeLeft] = useState(5);
+  const [timeLeft, setTimeLeft] = useState(20);
 
   useEffect(() => {
     let timer: number;
@@ -52,7 +77,7 @@ export const GroupGame: React.FC = () => {
   }, [phase, timeLeft]);
 
   const startRound = () => {
-    setTimeLeft(5);
+    setTimeLeft(20);
     setPhase('COUNTDOWN');
   };
 
@@ -90,7 +115,7 @@ export const GroupGame: React.FC = () => {
               onClick={startRound}
               className="px-16 py-8 bg-cyan-500 text-slate-950 rounded-[2rem] text-3xl font-black hover:scale-110 transition-transform shadow-[0_0_30px_rgba(6,182,212,0.4)]"
             >
-              LANCER LE SCAN (5s)
+              LANCER LE SCAN (20s)
             </button>
           </div>
         )}
@@ -104,7 +129,7 @@ export const GroupGame: React.FC = () => {
             <div className="w-full h-4 bg-white/5 rounded-full overflow-hidden">
               <div 
                 className="h-full bg-cyan-500 transition-all duration-1000 ease-linear" 
-                style={{ width: `${(timeLeft / 5) * 100}%` }}
+                style={{ width: `${(timeLeft / 20) * 100}%` }}
               ></div>
             </div>
           </div>
@@ -112,6 +137,9 @@ export const GroupGame: React.FC = () => {
 
         {phase === 'REVEAL' && (
           <div className="space-y-8 animate-in slide-in-from-bottom duration-500">
+            <h3 className="text-4xl font-black font-heading leading-tight italic text-slate-400 mb-8">
+              "{current.text}"
+            </h3>
             <div className="flex items-center justify-center gap-6">
               {current.isTrue ? (
                 <div className="flex flex-col items-center">
